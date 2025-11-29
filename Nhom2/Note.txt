@@ -5,6 +5,21 @@
     + Có thể sử dụng dấu // hoặc /**/ để comment code bằng : Tiếng việt không dấu, ngắn gọn dễ hiểu sau mỗi dòng code
     + Có thể sử dụng dấy /**/ để comment vấn đề, thuật toán ở cuối cùng của đoạn code để giải thích, cũng sử dụng tiếng việt không dấu
     + Liên quan đế các bài lượng giác (nếu có), giá trị góc được nhập vào sẽ là độ (không nên dùng raidan)
+    + Tham khảo cách xử lý nhập một số (nếu đề bài không chỉ rõ ràng giá trị được nhập vào)
+        double nhap_canh(const char *ten)
+        {
+            double x;
+            while (1)
+            {
+                printf("Nhap %s: ", ten);
+
+                if (scanf("%lf", &x) == 1 && x > 0)
+                    return x;
+
+                printf("Gia tri khong hop le, phai > 0. Nhap lai.\n");
+                while (getchar() != '\n'); // xoa bo dem
+            }
+        }
     + Một số yêu cầu bắt buộc (quy định riêng của người ra đề, yêu cầu phải làm theo)
         + Nhập vào : 2 , 2.0 , 3 , 3.0 => vậy tổng số nguyên tố là bằng 5 = 2 + 3 (2.0, 3.0 phải được coi là số thực, không phải là số nguyên tố).
         + Nếu đề không chỉ rõ , N là một số nguyên. Mà để chỉ nói : nhập giá trị n là số phần tử ... thì nếu nhập vào giá trị float (số thực)
