@@ -1,6 +1,25 @@
 #include <stdio.h>
 #include <math.h>
 
+#define EPS 1e-9   // dung cho so sanh double
+
+/* Ham nhap mot canh tam giac (su dung cach nhap cua bai truoc) */
+double nhap_canh(const char *ten) 
+{
+    double x;
+    while (1)
+    {
+        printf("Nhap canh %s: ", ten);
+
+        if (scanf("%lf", &x) == 1 && x > 0)
+            return x;
+
+        printf("Gia tri khong hop le, phai > 0. Nhap lai.\n");
+
+        while (getchar() != '\n'); // xoa bo dem
+    }
+}
+
 /* Ham kiem tra co phai tam giac hay khong */
 int la_tam_giac(double a, double b, double c) {
     /* Kiem tra dieu kien tam giac: tong 2 canh lon hon canh con lai */
@@ -12,47 +31,49 @@ int la_tam_giac(double a, double b, double c) {
 
 /* Ham kiem tra loai tam giac */
 void loai_tam_giac(double a, double b, double c) {
-    if (a == b && b == c) {
+    if (fabs(a - b) < EPS && fabs(b - c) < EPS) {
         printf("Tam giac deu\n"); // 3 canh bang nhau
-    } else if (a == b || a == c || b == c) {
+    } 
+    else if (fabs(a - b) < EPS || fabs(a - c) < EPS || fabs(b - c) < EPS) {
+
         /* co 2 canh bang nhau */
         /* kiem tra them tam giac vuong can */
-        double a2, b2, c2;
-        a2 = a * a;
-        b2 = b * b;
-        c2 = c * c;
-        if (fabs(a2 + b2 - c2) < 1e-9 ||
-            fabs(a2 + c2 - b2) < 1e-9 ||
-            fabs(b2 + c2 - a2) < 1e-9) {
+        double a2 = a * a, b2 = b * b, c2 = c * c;
+
+        if (fabs(a2 + b2 - c2) < EPS ||
+            fabs(a2 + c2 - b2) < EPS ||
+            fabs(b2 + c2 - a2) < EPS)
+        {
             printf("Tam giac vuong can\n");
-        } else {
+        } 
+        else {
             printf("Tam giac can\n");
         }
-    } else {
+    } 
+    else {
         /* khong canh nao bang nhau */
-        double a2, b2, c2;
-        a2 = a * a;
-        b2 = b * b;
-        c2 = c * c;
+        double a2 = a * a, b2 = b * b, c2 = c * c;
 
-        if (fabs(a2 + b2 - c2) < 1e-9 ||
-            fabs(a2 + c2 - b2) < 1e-9 ||
-            fabs(b2 + c2 - a2) < 1e-9) {
+        if (fabs(a2 + b2 - c2) < EPS ||
+            fabs(a2 + c2 - b2) < EPS ||
+            fabs(b2 + c2 - a2) < EPS)
+        {
             printf("Tam giac vuong\n"); // dung dinh li Py-ta-go
-        } else {
+        } 
+        else {
             printf("Tam giac thuong\n");
         }
     }
 }
 
-/* Ham nhap 3 canh */
+/* Ham nhap 3 canh – GIỮ COMMENT CŨ, nhưng thay nội dung bằng nhap_canh */
 void nhap_3_canh(double *a, double *b, double *c) {
-    printf("Nhap canh a: ");
-    scanf("%lf", a); // nhap so thuc
-    printf("Nhap canh b: ");
-    scanf("%lf", b);
-    printf("Nhap canh c: ");
-    scanf("%lf", c);
+    // Giữ nguyên comment gốc:
+    *a = nhap_canh("a");
+
+    *b = nhap_canh("b");
+
+    *c = nhap_canh("c");
 }
 
 int main(void) {
