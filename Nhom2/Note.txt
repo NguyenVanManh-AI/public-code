@@ -34,3 +34,11 @@
         + Câu 70.b , Ví dụ có hai mảng A[1,4,3,2,4] và B[2,8,9,7,5,9] thì không được phép sắp xếp trước mảng A và mảng B , cũng không được phép dùng mảng phụ. 
             Mà cách xử lí sẽ là , lặp qua mảng B sau đó thêm các phần tử của mảng B vào mảng A và vừa thêm , vừa sắp xếp. 
             (Không sắp xếp sau có nghĩa là không thêm vào rồi mới sắp xếp)
+
+- Test case 
+    + Check giá trị nhập vào, phải là số nguyên, số thực, không cho phép nhập vào chuỗi
+        + Nghiêm ngặt hơn nữa, ví dụ 2.0 => vẫn là số thực => yêu cầu nhập lại số nguyên
+    + Check các giá trị biên
+    + Check các sai số, số vô cùng lớn, số vô cùng bé 
+    + Check các trường hợp đặc biệt ví dụ : 1/a thì a phải khác 0 
+    + Cover hết tất cả các trường hợp của bài toán 
