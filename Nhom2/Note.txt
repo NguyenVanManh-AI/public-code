@@ -1,0 +1,19 @@
+- Sử dụng C chuẩn (không sử dụng C++) để code với các lưu ý sau.
+    + Khai báo biến trước sau đó sử dụng trong for,... (cách hoạt động của C chuẩn)
+    + Không code thẳng và main mà hãy chia ra và chỉ để hàm main gọi 
+    + Tên hàm tiếng việt, được đặt theo kiểu snake case (ví dụ tinh_tong)
+    + Có thể sử dụng dấu // hoặc /**/ để comment code bằng : Tiếng việt không dấu, ngắn gọn dễ hiểu sau mỗi dòng code
+    + Có thể sử dụng dấy /**/ để comment vấn đề, thuật toán ở cuối cùng của đoạn code để giải thích, cũng sử dụng tiếng việt không dấu
+    + Liên quan đế các bài lượng giác (nếu có), giá trị góc được nhập vào sẽ là độ (không nên dùng raidan)
+    + Một số yêu cầu bắt buộc (quy định riêng của người ra đề, yêu cầu phải làm theo)
+        + Nhập vào : 2 , 2.0 , 3 , 3.0 => vậy tổng số nguyên tố là bằng 5 = 2 + 3 (2.0, 3.0 phải được coi là số thực, không phải là số nguyên tố).
+        + Nếu đề không chỉ rõ , N là một số nguyên. Mà để chỉ nói : nhập giá trị n là số phần tử ... thì nếu nhập vào giá trị float (số thực)
+            thì cũng phải xử lí trường hợp này, chứ không phải lúc nào số phần tử n cũng là số nguyên (trừ khi đề chỉ rõ như vậy) 
+            => nếu theo logic nhập vào 2.0 được xem là số thực thì số phần tử nhập vào float thì phải yêu cầu nhập lại chứ không ép sang int. 
+        + Nếu đề không chỉ rõ giới hạn của giá trị N nhập vào thì phải nghĩ đến việc xử lý số lớn, vì người chấm có thể nhập vào một số cực lớn 
+        + Xử lí số lớn, nếu đề không chỉ rõ giá trị số là bao nhiêu thì phải tính đến trường hợp nhập vào số lớn, 
+            ví dụ tính toán giai thừa,... thì cũng phải tính cho được
+        + Ma trận cũng tương tự, số phần tử của ma trận cũng có thể là số lớn 
+        + Câu 70.b , Ví dụ có hai mảng A[1,4,3,2,4] và B[2,8,9,7,5,9] thì không được phép sắp xếp trước mảng A và mảng B , cũng không được phép dùng mảng phụ. 
+            Mà cách xử lí sẽ là , lặp qua mảng B sau đó thêm các phần tử của mảng B vào mảng A và vừa thêm , vừa sắp xếp. 
+            (Không sắp xếp sau có nghĩa là không thêm vào rồi mới sắp xếp)
