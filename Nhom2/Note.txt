@@ -5,6 +5,8 @@
     + Có thể sử dụng dấu // hoặc /**/ để comment code bằng : Tiếng việt không dấu, ngắn gọn dễ hiểu sau mỗi dòng code
     + Có thể sử dụng dấy /**/ để comment vấn đề, thuật toán ở cuối cùng của đoạn code để giải thích, cũng sử dụng tiếng việt không dấu
     + Liên quan đế các bài lượng giác (nếu có), giá trị góc được nhập vào sẽ là độ (không nên dùng raidan)
+    + Nên tính đến các trường hợp đặc biệt (đối với giá trị nhập vào và có hướng giải quyết cho nó ví dụ in ra không hợp lệ)
+        ví dụ đề bài là tính : 1/a thì phải biết bằng a = 0 sẽ không tính được.  
     + Tham khảo cách xử lý nhập một số (nếu đề bài không chỉ rõ ràng giá trị được nhập vào)
         double nhap_canh(const char *ten)
         {
