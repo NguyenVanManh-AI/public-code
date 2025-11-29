@@ -1,97 +1,107 @@
 #include <stdio.h>
 #include <math.h>
 
-// ham kiem tra gia tri float co hop le cho canh tam giac hay khong
-float nhap_canh(const char *ten)
+#define EPSILON 1e-12   // chính xác hơn cho double
+
+// ham kiem tra gia tri double co hop le cho canh tam giac hay khong
+double nhap_canh(const char *ten)
 {
-    float x;
+    double x;
     while (1)
     {
         printf("Nhap canh %s: ", ten);
-        scanf("%f", &x);
 
-        if (x > 0)
+        if (scanf("%lf", &x) == 1 && x > 0)
             return x;
 
         printf("Gia tri khong hop le, phai > 0. Nhap lai.\n");
+        while (getchar() != '\n'); // xoa bo dem
     }
 }
 
 // ham kiem tra 3 canh co tao thanh tam giac hay khong
-int la_tam_giac(float a, float b, float c)
+int la_tam_giac(double a, double b, double c)
 {
     return (a + b > c) && (a + c > b) && (b + c > a);
 }
 
 // ham tinh dien tich tam giac (Heron)
-float dien_tich(float a, float b, float c)
+double dien_tich(double a, double b, double c)
 {
-    float p = (a + b + c) / 2.0f;   // nua chu vi
-    return sqrt(p * (p - a) * (p - b) * (p - c));
+    double p = (a + b + c) / 2.0;
+    double S2 = p * (p - a) * (p - b) * (p - c);
+
+    if (S2 <= EPSILON) return 0; // tam giac suy bien
+
+    return sqrt(S2);
 }
 
 // ham tinh chieu cao
-void tinh_chieu_cao(float a, float b, float c)
+void tinh_chieu_cao(double a, double b, double c)
 {
-    float S = dien_tich(a, b, c);
+    double S = dien_tich(a, b, c);
+    if (S == 0)
+    {
+        printf("Tam giac suy bien → khong co chieu cao.\n");
+        return;
+    }
 
-    float ha = 2 * S / a;
-    float hb = 2 * S / b;
-    float hc = 2 * S / c;
-
-    printf("Chieu cao ha = %.6f\n", ha);
-    printf("Chieu cao hb = %.6f\n", hb);
-    printf("Chieu cao hc = %.6f\n", hc);
+    printf("Chieu cao ha = %.6lf\n", 2*S/a);
+    printf("Chieu cao hb = %.6lf\n", 2*S/b);
+    printf("Chieu cao hc = %.6lf\n", 2*S/c);
 }
 
 // ham tinh duong trung tuyen
-void tinh_trung_tuyen(float a, float b, float c)
+void tinh_trung_tuyen(double a, double b, double c)
 {
-    float ma = sqrt(2*b*b + 2*c*c - a*a) / 2.0f;
-    float mb = sqrt(2*a*a + 2*c*c - b*b) / 2.0f;
-    float mc = sqrt(2*a*a + 2*b*b - c*c) / 2.0f;
-
-    printf("Trung tuyen ma = %.6f\n", ma);
-    printf("Trung tuyen mb = %.6f\n", mb);
-    printf("Trung tuyen mc = %.6f\n", mc);
+    printf("Trung tuyen ma = %.6lf\n", sqrt(2*b*b + 2*c*c - a*a)/2);
+    printf("Trung tuyen mb = %.6lf\n", sqrt(2*a*a + 2*c*c - b*b)/2);
+    printf("Trung tuyen mc = %.6lf\n", sqrt(2*a*a + 2*b*b - c*c)/2);
 }
 
 // ham tinh duong phan giac
-void tinh_phan_giac(float a, float b, float c)
+void tinh_phan_giac(double a, double b, double c)
 {
-    float la = sqrt(b*c * (1 - (a*a) / ((b + c)*(b + c))));
-    float lb = sqrt(a*c * (1 - (b*b) / ((a + c)*(a + c))));
-    float lc = sqrt(a*b * (1 - (c*c) / ((a + b)*(a + b))));
-
-    printf("Phan giac la = %.6f\n", la);
-    printf("Phan giac lb = %.6f\n", lb);
-    printf("Phan giac lc = %.6f\n", lc);
+    printf("Phan giac la = %.6lf\n", sqrt(b*c * (1 - a*a/((b+c)*(b+c)))));
+    printf("Phan giac lb = %.6lf\n", sqrt(a*c * (1 - b*b/((a+c)*(a+c)))));
+    printf("Phan giac lc = %.6lf\n", sqrt(a*b * (1 - c*c/((a+b)*(a+b)))));
 }
 
 // ham tinh ban kinh noi tiep va ngoai tiep
-void tinh_ban_kinh(float a, float b, float c)
+void tinh_ban_kinh(double a, double b, double c)
 {
-    float S = dien_tich(a, b, c);
-    float p = (a + b + c) / 2.0f;
+    double S = dien_tich(a, b, c);
+    double p = (a + b + c)/2.0;
 
-    float r = S / p;      // ban kinh noi tiep
-    float R = (a*b*c) / (4.0f * S);  // ban kinh ngoai tiep
+    if (S == 0)
+    {
+        printf("Tam giac suy bien → khong ton tai ban kinh noi/ngoai tiep.\n");
+        return;
+    }
 
-    printf("Ban kinh noi tiep r = %.6f\n", r);
-    printf("Ban kinh ngoai tiep R = %.6f\n", R);
+    printf("Ban kinh noi tiep r = %.6lf\n", S/p);
+    printf("Ban kinh ngoai tiep R = %.6lf\n", a*b*c/(4*S));
 }
 
-// ham xu ly chinh
 void xu_ly()
 {
     printf("Nhap ba canh cua tam giac\n");
-    float a = nhap_canh("a");
-    float b = nhap_canh("b");
-    float c = nhap_canh("c");
+
+    double a = nhap_canh("a");
+    double b = nhap_canh("b");
+    double c = nhap_canh("c");
 
     if (!la_tam_giac(a, b, c))
     {
         printf("Ba canh khong tao thanh tam giac.\n");
+        return;
+    }
+
+    if (fabs(a + b - c) < EPSILON ||
+        fabs(a + c - b) < EPSILON ||
+        fabs(b + c - a) < EPSILON)
+    {
+        printf("Day la tam giac SUY BIEN.\n");
         return;
     }
 
