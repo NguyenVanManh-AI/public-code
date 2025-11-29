@@ -1,86 +1,89 @@
 #include <stdio.h>
 
-/* ham tinh tu trai sang phai */
-double tinh_trai_sang_phai() {
+// ham tinh tong tu trai sang phai
+double tinh_trai_sang_phai(int n)
+{
     int i;
-    double sum;
-    sum = 0.0;
-
-    for (i = 1; i <= 10000; i++) {
-        if (i % 2 == 1) {
-            sum = sum + 1.0 / i;   /* so le cong */
-        } else {
-            sum = sum - 1.0 / i;   /* so chan tru */
-        }
+    double tong = 0.0;
+    for (i = 1; i <= n; i++)
+    {
+        if (i % 2 == 0)
+            tong -= 1.0 / i;  // so chan tru di
+        else
+            tong += 1.0 / i;  // so le cong len
     }
-
-    return sum;
+    return tong;
 }
 
-/* ham tinh tu phai sang trai */
-double tinh_phai_sang_trai() {
+// ham tinh tong tu phai sang trai
+double tinh_phai_sang_trai(int n)
+{
     int i;
-    double sum;
-    sum = 0.0;
-
-    for (i = 10000; i >= 1; i--) {
-        if (i % 2 == 1) {
-            sum = sum + 1.0 / i;
-        } else {
-            sum = sum - 1.0 / i;
-        }
+    double tong = 0.0;
+    for (i = n; i >= 1; i--)
+    {
+        if (i % 2 == 0)
+            tong -= 1.0 / i;
+        else
+            tong += 1.0 / i;
     }
-
-    return sum;
+    return tong;
 }
 
-/* ham tinh tong s1 = 1 + 1/3 + 1/5 + ... + 1/9999 */
-double tinh_s1() {
+// ham tinh s1 le + s2 chan va tra ve s1 - s2
+double tinh_tach_s1_s2(int n)
+{
     int i;
-    double sum;
-    sum = 0.0;
+    double s1 = 0.0; // tong le
+    double s2 = 0.0; // tong chan
 
-    for (i = 1; i <= 9999; i += 2) {
-        sum = sum + 1.0 / i;
+    for (i = 1; i <= n; i++)
+    {
+        if (i % 2 == 0)
+            s2 += 1.0 / i;  // so chan
+        else
+            s1 += 1.0 / i;  // so le
     }
 
-    return sum;
+    return s1 - s2;
 }
 
-/* ham tinh tong s2 = 1/2 + 1/4 + ... + 1/10000 */
-double tinh_s2() {
-    int i;
-    double sum;
-    sum = 0.0;
+// ham xu ly chinh
+void xu_ly()
+{
+    int n = 10000;
 
-    for (i = 2; i <= 10000; i += 2) {
-        sum = sum + 1.0 / i;
-    }
+    // a. tinh tu trai sang phai
+    double kq_a = tinh_trai_sang_phai(n);
+    printf("a. Tong tinh tu trai sang phai: %.15lf\n", kq_a); // 0.693097183059959
 
-    return sum;
+    // b. tinh tu phai sang trai
+    double kq_b = tinh_phai_sang_trai(n);
+    printf("b. Tong tinh tu phai sang trai: %.15lf\n", kq_b); // 0.693097183059945
+
+    // c. tinh s1 - s2
+    double kq_c = tinh_tach_s1_s2(n);
+    printf("c. Tong s1 - s2: %.15lf\n", kq_c); // 0.693097183059952
+
+    // d. so sanh b va c
+    if (kq_b == kq_c)
+        printf("d. Ket qua b va c bang nhau\n");
+    else
+        printf("d. Ket qua b va c khac nhau\n");
+
+    printf("   Ly do khac nhau: do sai so cham phan (floating point) khi cong tru cac so nho theo thu tu khac nhau.\n");
 }
 
-int main() {
-    double a, b, s1, s2;
-
-    a = tinh_trai_sang_phai(); 
-    b = tinh_phai_sang_trai(); 
-    s1 = tinh_s1();
-    s2 = tinh_s2();
-
-    printf("Ket qua tu trai sang phai: %.15f\n", a); // 0.693097183059959
-    printf("Ket qua tu phai sang trai: %.15f\n", b); // 0.693097183059945
-
-    printf("s1 = %.15f\n", s1); // 5.240351609552156
-    printf("s2 = %.15f\n", s2); // 4.547254426492204
-
-    /* giai thich: do sai so tich luy cua so thuc */
-    printf("Ly do cach tinh cau a (trai sang phai) va b (phai sang trai) khac nhau: do sai so khi cong so thuc floating point.\n");
-
+int main()
+{
+    xu_ly();
     return 0;
 }
+
 /*
-Cong so thuc (double) bi sai so vi may tinh chi luu duoc so luong bit huu han.
-Khi cong so lon truoc, sai so cua so nho bi nuot mat.
-Khi cong so nho truoc, ket qua chinh xac hon vi sai so it bi cong don.
+Giai thich thuat toan:
+- Ham tinh_trai_sang_phai: cong tru lien tiep tu 1 den n
+- Ham tinh_phai_sang_trai: cong tru tu n ve 1
+- Ham tinh_tach_s1_s2: tong le - tong chan
+- KQ khac nhau: do cong thuc floating point khac nhau khi cong tru nhieu so nho theo thu tu khac
 */
