@@ -1,72 +1,93 @@
 #include <stdio.h>
+#include <string.h>
+#include <ctype.h>
 
-#define MAX 100
+/* Hàm nhập số nguyên nghiêm ngặt, trả về long long */
+long long nhap_so_nguyen(const char *ten)
+{
+    char s[200];
+    while (1)
+    {
+        int hop_le = 1;
+        printf("Nhap %s: ", ten);
+        scanf("%s", s);
 
-// ham nhap mang
-void nhap_mang(int a[], int *n) {
-    int i;
+        int i = 0;
 
-    printf("Nhap so luong phan tu n: ");
-    scanf("%d", n);
+        /* Cho phép số âm */
+        if (s[0] == '-' && s[1] != '\0')
+            i = 1;
 
-    for (i = 0; i < *n; i++) {
-        printf("a[%d] = ", i);
-        scanf("%d", &a[i]);
+        /* Kiểm tra từng ký tự */
+        for (; s[i] != '\0'; i++)
+        {
+            if (!isdigit(s[i]))
+            {
+                hop_le = 0;
+                break;
+            }
+        }
+
+        if (hop_le)
+        {
+            long long x = 0;
+            int dau = (s[0] == '-') ? -1 : 1;
+            i = (s[0] == '-') ? 1 : 0;
+
+            /* Chuyển chuỗi sang số long long */
+            for (; s[i] != '\0'; i++)
+                x = x * 10 + (s[i] - '0');
+
+            return dau * x;
+        }
+
+        printf("Gia tri khong hop le. Nhap lai.\n");
     }
 }
 
-// ham xuat mang
-void xuat_mang(int a[], int n) {
-    int i;
+/* Hàm xóa phần tử tại vị trí k */
+void xoa_vi_tri(long long A[], int *n, int k)
+{
+    for (int i = k; i < *n - 1; i++)
+        A[i] = A[i + 1];
+    (*n)--;
+}
 
-    for (i = 0; i < n; i++) {
-        printf("%d ", a[i]);
+int main()
+{
+    int n = (int)nhap_so_nguyen("so luong phan tu n");
+    while (n <= 0)
+    {
+        printf("n phai > 0. Nhap lai.\n");
+        n = (int)nhap_so_nguyen("so luong phan tu n");
     }
+
+    long long A[200];
+
+    printf("\n=== Nhap cac phan tu cua mang A ===\n");
+    for (int i = 0; i < n; i++)
+    {
+        char ten[50];
+        sprintf(ten, "A[%d]", i);
+        A[i] = nhap_so_nguyen(ten);
+    }
+
+    /* Nhập vị trí k */
+    int k = (int)nhap_so_nguyen("chi so k can xoa");
+    while (k < 0 || k >= n)
+    {
+        printf("k phai nam trong [0 .. %d]. Nhap lai.\n", n - 1);
+        k = (int)nhap_so_nguyen("chi so k can xoa");
+    }
+
+    /* Xóa phần tử */
+    xoa_vi_tri(A, &n, k);
+
+    /* Xuất kết quả */
+    printf("\n=== Mang sau khi xoa A[%d] ===\n", k);
+    for (int i = 0; i < n; i++)
+        printf("%lld ", A[i]);
+
     printf("\n");
-}
-
-// ham xoa phan tu co chi so k
-int xoa_phan_tu(int a[], int *n, int k) {
-    int i;
-
-    // kiem tra chi so k hop le
-    if (k < 0 || k >= *n) {
-        return 0; // xoa khong thanh cong
-    }
-
-    // dich cac phan tu sang trai
-    for (i = k; i < *n - 1; i++) {
-        a[i] = a[i + 1];
-    }
-
-    (*n)--; // giam so luong phan tu
-    return 1; // xoa thanh cong
-}
-
-int main() {
-    int a[MAX];
-    int n, k;
-    int check;
-
-    nhap_mang(a, &n);
-
-    printf("Nhap chi so k can xoa: ");
-    scanf("%d", &k);
-
-    check = xoa_phan_tu(a, &n, k);
-
-    if (check == 1) {
-        printf("Mang sau khi xoa:\n");
-        xuat_mang(a, n);
-    } else {
-        printf("Chi so k khong hop le, khong the xoa!\n");
-    }
-
     return 0;
 }
-
-/*
-- Kiem tra k co hop le: 0 <= k < n
-- Neu hop le thi dich cac phan tu tu vi tri k sang trai 1 don vi
-- Giam so luong phan tu n di 1
-*/
