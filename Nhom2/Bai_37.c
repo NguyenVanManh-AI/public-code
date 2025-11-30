@@ -1,61 +1,97 @@
 #include <stdio.h>
 #include <math.h>
-#include <limits.h>
+#include <ctype.h>
 
-#define MAXN 7000000
-
-/* ham phan tich N thanh tong cac so chinh phuong it nhat */
-void phan_tich(int n) {
-    static int dp[MAXN + 1];
-    static int trace[MAXN + 1];
-
+/* Ham nhap N la so tu nhien NGHIEM NGAT, khong cho phep 2.0, 3.0, ... */
+int nhap_n()
+{
+    char s[100];
     int i;
-    int j;
-    int sq;
-    int can;
 
-    /* khoi tao dp */
-    for (i = 0; i <= n; i++) {
-        dp[i] = INT_MAX;
-        trace[i] = -1;
-    }
+    while (1)
+    {
+        int hop_le = 1;
 
-    dp[0] = 0;
+        printf("Nhap N (N <= 7000000): ");
+        scanf("%s", s);
 
-    /* lap tinh dp */
-    for (i = 1; i <= n; i++) {
-        can = (int)sqrt(i);
-        for (j = can; j >= 1; j--) {
-            sq = j * j;
-            if (dp[i - sq] + 1 < dp[i]) {
-                dp[i] = dp[i - sq] + 1;
-                trace[i] = sq;
+        /* Kiem tra chuoi chi gom chu so */
+        for (i = 0; s[i] != '\0'; i++)
+        {
+            if (!isdigit(s[i]))   // phat hien ky tu khong phai chu so
+            {
+                hop_le = 0;
+                break;
             }
         }
-    }
 
-    /* truy vet */
-    i = n;
-    printf("Phan tich: ");
-    while (i > 0) {
-        printf("%d ", trace[i]);
-        i = i - trace[i];
+        if (hop_le)
+        {
+            long long n = 0;
+
+            /* Chuyen chuoi sang so */
+            for (i = 0; s[i] != '\0'; i++)
+                n = n * 10 + (s[i] - '0');
+
+            /* Kiem tra pham vi */
+            if (n > 0 && n <= 7000000)
+                return (int)n;
+        }
+
+        printf("Gia tri khong hop le. Nhap lai.\n");
     }
-    printf("\n");
 }
 
-int main() {
-    int n;
+/* Tim so chinh phuong lon nhat <= x */
+int so_cp_lon_nhat(int x)
+{
+    int k = (int)sqrt(x);
+    return k * k;
+}
 
-    printf("Nhap N (N <= 7000000): ");
-    scanf("%d", &n);
+int main()
+{
+    int N = nhap_n();
+    int temp = N;
 
-    if (n < 0 || n > MAXN) {
-        printf("N khong hop le\n");
-        return 0;
+    /* Luu lai cac so cp */
+    int cp[100];
+    int mu[100];
+    int cnt = 0;
+
+    while (temp > 0)
+    {
+        int sq = so_cp_lon_nhat(temp); // số chính phương lớn nhất
+        int k = (int)sqrt(sq);         // lấy số mũ để in dạng k^2
+
+        cp[cnt] = sq;
+        mu[cnt] = k;
+        cnt++;
+
+        temp -= sq;
     }
 
-    phan_tich(n);
+    /* In ket qua */
+    printf("%d = ", N);
+
+    int i;
+    for (i = 0; i < cnt; i++)
+    {
+        printf("%d^2", mu[i]);
+        if (i < cnt - 1) printf(" + ");
+    }
+
+    printf("\n");
 
     return 0;
 }
+
+/*
+Thuat toan:
+- N hap N đảm bảo là số tự nhiên và <= 7 triệu.
+- Lặp:
+      lấy số chính phương lớn nhất <= N
+      trừ dần đến khi về 0
+- Lưu lại cả sq = k*k và k để in ra k^2
+- In kết quả theo dạng k1^2 + k2^2 + ...
+*/
