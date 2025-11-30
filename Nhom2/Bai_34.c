@@ -1,64 +1,77 @@
 #include <stdio.h>
 #include <string.h>
 
-/* ham kiem tra chuoi co chu so dung hay khong */
-int kiem_tra_chu_so(char chuoi[]) {
-    int i;
-    int len;
+/* Ham nhap chuoi so nguyen duong */
+void nhap_chuoi(char *s, int max_len)
+{
+    while (1)
+    {
+        printf("Nhap chuoi so nguyen duong a: ");
+        scanf("%s", s); // nhap chuoi, khong dung space
 
-    len = strlen(chuoi);
+        int i;
+        int hop_le = 1;
 
-    /* kiem tra rong */
-    if (len == 0) {
-        return 0;
-    }
-
-    /* khong cho phep bat dau bang '0' */
-    if (chuoi[0] == '0') {
-        return 0;
-    }
-
-    /* kiem tra tung ky tu co phai la chu so */
-    for (i = 0; i < len; i++) {
-        if (chuoi[i] < '0' || chuoi[i] > '9') {
-            return 0;
+        /* Kiem tra toan ky tu la so */
+        for (i = 0; s[i] != '\0'; i++)
+        {
+            if (s[i] < '0' || s[i] > '9')
+            {
+                hop_le = 0;
+                break;
+            }
         }
-    }
 
-    return 1;
+        /* Khong duoc bat dau bang '0' neu do dai > 1 */
+        if (hop_le && s[0] == '0' && strlen(s) > 1)
+            hop_le = 0;
+
+        if (hop_le)
+            return;
+
+        printf("Chuoi khong hop le. Nhap lai.\n");
+    }
 }
 
-/* ham kiem tra tu doi xung */
-int kiem_tra_doi_xung(char chuoi[]) {
-    int i;
-    int len;
+/* Ham kiem tra chuoi co doi xung khong */
+int la_doi_xung(const char *s)
+{
+    int l = 0;
+    int r = strlen(s) - 1;
 
-    len = strlen(chuoi);
+    while (l < r)
+    {
+        if (s[l] != s[r])
+            return 0; // khong doi xung
 
-    for (i = 0; i < len / 2; i++) {
-        if (chuoi[i] != chuoi[len - 1 - i]) {
-            return 0;
-        }
+        l++;
+        r--;
     }
 
-    return 1;
+    return 1; // doi xung
 }
 
-int main() {
-    char a[201];
+int main(void)
+{
+    char a[105]; // du cho chuoi lon
 
-    printf("Nhap chuoi so nguyen duong: ");
-    scanf("%200s", a);
+    nhap_chuoi(a, 105); // nhap chuoi so hop le
 
-    if (!kiem_tra_chu_so(a)) {
-        printf("Chuoi khong hop le hoac bat dau bang so 0\n");
-    } else {
-        if (kiem_tra_doi_xung(a)) {
-            printf("Chuoi tu doi xung\n");
-        } else {
-            printf("Chuoi khong tu doi xung\n");
-        }
-    }
+    if (la_doi_xung(a))
+        printf("Chuoi tu doi xung\n");
+    else
+        printf("Chuoi khong tu doi xung\n");
 
     return 0;
 }
+
+/*
+Thuat toan:
+- Nhap chuoi ky tu (de xu ly so rat lon).
+- Kiem tra:
+    + Tat ca ky tu phai la '0'..'9'
+    + Khong duoc bat dau bang '0' neu chuoi co do dai > 1
+- Kiem tra doi xung:
+    + So sanh ky tu s[l] va s[r] tu 2 dau lien tuc thu hep
+- Neu toan bo giong nhau => doi xung
+*/
