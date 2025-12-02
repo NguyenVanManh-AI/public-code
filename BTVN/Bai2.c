@@ -3,6 +3,8 @@
 
 #define MAX 50
 
+// Nguyen Van Manh - Lop SH 20T1 - MSSV: 102200024 - Nhom 10A
+
 // 1. Nhap ma tran vuong cap n
 void nhapMat(float a[][MAX], int n){
     for(int i=0; i<n; i++)

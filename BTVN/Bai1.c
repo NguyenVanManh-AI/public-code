@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <math.h>
 
+// Nguyen Van Manh - Lop SH 20T1 - MSSV: 102200024 - Nhom 10A
+
 // 1. Ham nhap ma tran
 void nhapMat(float a[][50], int m, int n) {
     for(int i=0;i<m;i++)
