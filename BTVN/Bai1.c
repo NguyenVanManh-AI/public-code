@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// Ham nhap ma tran
+// 1. Ham nhap ma tran
 void nhapMat(float a[][50], int m, int n) {
     for(int i=0;i<m;i++)
         for(int j=0;j<n;j++) {
@@ -10,7 +10,7 @@ void nhapMat(float a[][50], int m, int n) {
         }
 }
 
-// Ham xuat ma tran
+// 2. Ham xuat ma tran
 void xuatMat(float a[][50], int m, int n) {
     for(int i=0;i<m;i++){
         for(int j=0;j<n;j++)
@@ -19,7 +19,7 @@ void xuatMat(float a[][50], int m, int n) {
     }
 }
 
-// Ham nhan ma tran A (m x n) va B (n x q)
+// 3. Ham nhan ma tran A (m x n) va B (n x q)
 void nhanMat(float A[][50], float B[][50], float C[][50], int m, int n, int q) {
     for(int i=0;i<m;i++)
         for(int j=0;j<q;j++){
@@ -29,14 +29,14 @@ void nhanMat(float A[][50], float B[][50], float C[][50], int m, int n, int q) {
         }
 }
 
-// Ham chuyen vi ma tran
+// 4. Ham chuyen vi ma tran
 void chuyenVi(float a[][50], float b[][50], int m, int n) {
     for(int i=0;i<m;i++)
         for(int j=0;j<n;j++)
             b[j][i] = a[i][j];
 }
 
-// Tim phan tu lon nhat tren 1 dong
+// 5. Tim phan tu lon nhat tren 1 dong
 int timMaxDong(float a[][50], int n, int dong){
     float max = a[dong][0];
     for(int j=1; j<n; j++) 
@@ -44,7 +44,7 @@ int timMaxDong(float a[][50], int n, int dong){
     return max;
 }
 
-// Tim phan tu nho nhat trong 1 cot
+// 6. Tim phan tu nho nhat trong 1 cot
 int timMinCot(float a[][50], int n, int cot){
     float min = a[0][cot];
     for(int i=1;i<n;i++)
@@ -52,7 +52,7 @@ int timMinCot(float a[][50], int n, int cot){
     return min;
 }
 
-// Doi sang co so bat ky tu 2 den 16
+// 5. Doi sang co so bat ky tu 2 den 16
 void doiCoSo(int so, int base){
     char cs[] = "0123456789ABCDEF";
     char kq[50];
@@ -71,7 +71,7 @@ void doiCoSo(int so, int base){
     for(int j=i-1; j>=0; j--) printf("%c", kq[j]);
 }
 
-// Tinh hang cua ma tran bang phuong phap khua Gauss
+// 7. Tinh hang cua ma tran bang phuong phap khua Gauss
 int rankMatrix(float a[][50], int m, int n){
     int rank = n;
 

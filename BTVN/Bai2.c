@@ -3,9 +3,7 @@
 
 #define MAX 50
 
-// ======================================
-// HAM NHAP MA TRAN VUONG
-// ======================================
+// 1. Ham nhap ma tran vuong
 void nhapMat(float a[][MAX], int n){
     for(int i=0;i<n;i++)
         for(int j=0;j<n;j++){
@@ -14,9 +12,7 @@ void nhapMat(float a[][MAX], int n){
         }
 }
 
-// ======================================
-// HAM XUAT MA TRAN
-// ======================================
+// 2. Ham xuat ma tran
 void xuatMat(float a[][MAX], int n){
     for(int i=0;i<n;i++){
         for(int j=0;j<n;j++)
@@ -25,9 +21,8 @@ void xuatMat(float a[][MAX], int n){
     }
 }
 
-// ======================================
-// 1. DINH THUC LAPALCE (DE QUY)
-// ======================================
+
+// 3.1. Dinh thuc Lapalce (de quy)
 float detLaplace(float a[][MAX], int n){
     if(n==1) return a[0][0];
     if(n==2) return a[0][0]*a[1][1]-a[0][1]*a[1][0];
@@ -49,9 +44,7 @@ float detLaplace(float a[][MAX], int n){
     return det;
 }
 
-// ======================================
-// 2. DINH THUC KHUA GAUSS
-// ======================================
+// 3.2. Dinh thuc khua Gauss
 float detGauss(float A[][MAX], int n){
     float a[MAX][MAX];
     for(int i=0;i<n;i++)
@@ -84,9 +77,7 @@ float detGauss(float A[][MAX], int n){
     return det;
 }
 
-// ======================================
-// 3. DINH THUC TAM GIAC TREN (DAU TUONG TU KHUA GAUSS)
-// ======================================
+// 3.3. Dinh thuc tam giac tren (dau tuong tu khua gauss)
 float detTriangle(float A[][MAX], int n){
     float a[MAX][MAX];
     for(int i=0;i<n;i++)
@@ -117,9 +108,8 @@ float detTriangle(float A[][MAX], int n){
     return det;
 }
 
-// ======================================
-// 4. DINH THUC LU DECOMPOSITION
-// ======================================
+
+// 3.4. Dinh thuc Lu Decomposition
 float detLU(float a[][MAX], int n){
     float L[MAX][MAX]={0}, U[MAX][MAX]={0};
     for(int i=0;i<n;i++){
@@ -145,9 +135,7 @@ float detLU(float a[][MAX], int n){
     return det;
 }
 
-// ======================================
-// 5. DINH THUC SARRUS (CHI CHO 3x3)
-// ======================================
+// 3.5. Dinh thuc sarrus (chi cho 3x3)
 float detSarrus(float a[][MAX]){
     return a[0][0]*a[1][1]*a[2][2] +
            a[0][1]*a[1][2]*a[2][0] +
@@ -157,9 +145,7 @@ float detSarrus(float a[][MAX]){
            a[0][1]*a[1][0]*a[2][2];
 }
 
-// ======================================
-// HAM TINH ADJOINT
-// ======================================
+// Ham tinh Adjoint
 void adjoint(float a[][MAX], float adj[][MAX], int n){
     float temp[MAX][MAX];
     for(int i=0;i<n;i++){
@@ -179,9 +165,7 @@ void adjoint(float a[][MAX], float adj[][MAX], int n){
     }
 }
 
-// ======================================
-// HAM NGHICH DAO
-// ======================================
+// 4. Ham nghich dao
 int inverse(float a[][MAX], float inv[][MAX], int n){
     float det=detGauss(a,n);
     if(det==0){
@@ -196,9 +180,6 @@ int inverse(float a[][MAX], float inv[][MAX], int n){
     return 1;
 }
 
-// ======================================
-// MAIN
-// ======================================
 int main(){
     int n;
     float A[MAX][MAX], INV[MAX][MAX];
@@ -229,4 +210,3 @@ int main(){
 
     return 0;
 }
-
