@@ -37,7 +37,7 @@ void chuyenVi(float a[][50], float b[][50], int m, int n) {
 }
 
 // 5. Tim phan tu lon nhat tren 1 dong
-int timMaxDong(float a[][50], int n, int dong){
+float timMaxDong(float a[][50], int n, int dong){
     float max = a[dong][0];
     for(int j=1; j<n; j++) 
         if(a[dong][j] > max) max = a[dong][j];
@@ -45,7 +45,7 @@ int timMaxDong(float a[][50], int n, int dong){
 }
 
 // 6. Tim phan tu nho nhat trong 1 cot
-int timMinCot(float a[][50], int n, int cot){
+float timMinCot(float a[][50], int n, int cot){
     float min = a[0][cot];
     for(int i=1;i<n;i++)
         if(a[i][cot] < min) min = a[i][cot];
@@ -71,7 +71,7 @@ void doiCoSo(int so, int base){
     for(int j=i-1; j>=0; j--) printf("%c", kq[j]);
 }
 
-// 7. Tinh hang cua ma tran bang phuong phap khua Gauss
+// 7. Tinh hang cua ma tran bang Gauss
 int rankMatrix(float a[][50], int m, int n){
     int rank = n;
 
@@ -144,7 +144,7 @@ int main(){
     if(m == n){
         int sum = 0;
         for(int i=0;i<n;i++){
-            int maxx = timMaxDong(A,n,i);
+            float maxx = timMaxDong(A,n,i);
             A[i][i] = maxx; // dua phan tu lon nhat len duong cheo
             sum += maxx;
         }
@@ -164,7 +164,7 @@ int main(){
     // 6. Neu B la ma tran vuong
     if(n == q){
         for(int i=0;i<n;i++){
-            int minn = timMinCot(B,n,i);
+            float minn = timMinCot(B,n,i);
             B[i][n-1-i] = minn; // dua phan tu nho nhat len duong cheo phu
         }
         printf("Ma tran B sau khi dua min len cheo phu:\n");
