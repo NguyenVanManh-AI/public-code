@@ -163,11 +163,18 @@ int main(){
 
     // 6. Neu B la ma tran vuong
     if(n == q){
-        for(int i=0;i<n;i++){
-            float minn = timMinCot(B,n,i);
-            B[i][n-1-i] = minn; // dua phan tu nho nhat len duong cheo phu
+        // luu min tung cot truoc de khong bi anh huong khi thay doi ma tran
+        float mins[50];
+        for(int j=0;j<n;j++){
+            mins[j] = timMinCot(B,n,j);
         }
-        printf("Ma tran B sau khi dua min len cheo phu:\n");
+
+        // gan vao vi tri duong cheo phu theo quy tac (n-1-j, j)
+        for(int j=0;j<n;j++){
+            B[n-1-j][j] = mins[j];
+        }
+
+        printf("Ma tran B sau khi dua min len duong cheo phu:\n");
         xuatMat(B,n,q);
     }
 
@@ -181,4 +188,3 @@ int main(){
 
     return 0;
 }
-
