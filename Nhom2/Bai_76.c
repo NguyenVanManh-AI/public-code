@@ -1,96 +1,58 @@
 #include <stdio.h>
 
-/* ham nhap ma tran nxn */
-void nhap_ma_tran(int a[][20], int n) {
-    int i, j;
-
-    for (i = 0; i < n; i++) {
-        for (j = 0; j < n; j++) {
-            printf("A[%d][%d] = ", i, j);
-            scanf("%d", &a[i][j]);
+void nhapMaTran(double a[][50], int n) {
+    for(int i=0;i<n;i++){
+        for(int j=0;j<n;j++){
+            printf("A[%d][%d] = ", i+1, j+1);
+            scanf("%lf", &a[i][j]);
         }
     }
 }
 
-/* ham xuat ma tran nxn */
-void xuat_ma_tran(int a[][20], int n) {
-    int i, j;
-
-    for (i = 0; i < n; i++) {
-        for (j = 0; j < n; j++) {
-            printf("%5d ", a[i][j]);
+void xuatMaTran(double a[][50], int n){
+    for(int i=0;i<n;i++){
+        for(int j=0;j<n;j++){
+            printf("%15.3f ", a[i][j]);
         }
         printf("\n");
     }
 }
 
-/* ham tim phan tu nho nhat tren 1 hang */
-int tim_nho_nhat_hang(int a[][20], int hang, int n) {
-    int j;
-    int min;
-
-    min = a[hang][0];
-
-    for (j = 1; j < n; j++) {
-        if (a[hang][j] < min) {
-            min = a[hang][j];
-        }
+double minHang(double a[][50], int n, int dong){
+    double min = a[dong][0];
+    for(int j=1;j<n;j++){
+        if(a[dong][j] < min) min = a[dong][j];
     }
-
     return min;
 }
 
-/* ham dua gia tri nho nhat moi hang len duong cheo phu */
-int xu_ly_duong_cheo_phu(int a[][20], int n, int dc[][20]) {
-    int i, j;
-    int min;
-    int tong;
+int main(){
+    int n;
+    double A[50][50];
 
-    tong = 0;
+    do{
+        printf("Nhap n (n > 0): ");
+        scanf("%d", &n);
+    }while(n <= 0);
 
-    /* tao ma tran co duong cheo phu la gia tri min moi hang */
-    for (i = 0; i < n; i++) {
-        min = tim_nho_nhat_hang(a, i, n);
-        tong += min;
+    printf("Nhap ma tran A:\n");
+    nhapMaTran(A, n);
 
-        for (j = 0; j < n; j++) {
-            if (j == n - 1 - i) {
-                dc[i][j] = min;
-            } else {
-                dc[i][j] = 0;
-            }
-        }
+    printf("Ma tran A vua nhap:\n");
+    xuatMaTran(A, n);
+
+    double sum = 0;
+
+    for(int i=0;i<n;i++){
+        double minn = minHang(A, n, i);    
+        A[i][n-1-i] = minn;                
+        sum += minn;
     }
 
-    return tong;
-}
+    printf("Ma tran sau khi dua phan tu nho nhat tung hang len duong cheo phu:\n");
+    xuatMaTran(A, n);
 
-int main() {
-    int a[20][20];
-    int dc[20][20];
-    int n;
-    int tong;
-
-    printf("Nhap cap ma tran n: ");
-    scanf("%d", &n);
-
-    nhap_ma_tran(a, n);
-
-    printf("\nMa tran A:\n");
-    xuat_ma_tran(a, n);
-
-    tong = xu_ly_duong_cheo_phu(a, n, dc);
-
-    printf("\nMa tran duong cheo phu voi gia tri nho nhat moi hang:\n");
-    xuat_ma_tran(dc, n);
-
-    printf("\nTong cac phan tu nho nhat moi hang = %d\n", tong);
+    printf("Tong cac phan tu nho nhat duoc dua len duong cheo phu = %.3f\n", sum);
 
     return 0;
 }
-/*
-Tim phan tu nho nhat tung hang
-Dat gia tri do len duong cheo phu (cac vi tri A[i][n-1-i])
-Cac vi tri khac gan 0
-Tinh tong cua cac gia tri nho nhat moi hang
-*/
