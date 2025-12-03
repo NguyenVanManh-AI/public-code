@@ -1,101 +1,110 @@
 #include <stdio.h>
+#include <ctype.h>
+#include <string.h>
+#include <math.h>
 
-#define MAX 100
+/* Ham doc chuoi (giu nguyen dang nguoi dung nhap) */
+void nhap_chuoi(const char *ten, char *out)
+{
+    printf("Nhap %s: ", ten);
+    scanf("%s", out);
+}
 
-// ham kiem tra so nguyen to
-int la_so_nguyen_to(int n) {
-    int i;
+/* Kiem tra chuoi co phai la so nguyen (khong chua dau cham) */
+int la_so_nguyen(const char *s)
+{
+    int i = 0;
 
-    if (n < 2)
-        return 0;
+    if (s[0] == '-' && s[1] != '\0')
+        i = 1;
 
-    for (i = 2; i * i <= n; i++) {
-        if (n % i == 0)
+    for (; s[i]; i++)
+        if (!isdigit(s[i]))
             return 0;
-    }
 
     return 1;
 }
 
-// ham nhap mang
-void nhap_mang(int a[], int *n) {
-    int i;
+/* Chuyen chuoi so nguyen sang long long */
+long long to_ll(const char *s)
+{
+    long long x = 0;
+    int dau = (s[0] == '-') ? -1 : 1;
+    int i = (s[0] == '-') ? 1 : 0;
 
-    do {
-        printf("Nhap so luong phan tu N (N > 0): ");
-        scanf("%d", n);
+    for (; s[i]; i++)
+        x = x * 10 + (s[i] - '0');
 
-        if (*n <= 0) {
-            printf("N phai lon hon 0!\n");
-        }
-    } while (*n <= 0);
-
-    for (i = 0; i < *n; i++) {
-        printf("a[%d] = ", i);
-        scanf("%d", &a[i]);
-    }
+    return dau * x;
 }
 
-// ham xuat mang
-void xuat_mang(int a[], int n) {
-    int i;
+/* Kiem tra so nguyen to */
+int la_nguyen_to(long long x)
+{
+    if (x < 2) return 0;
 
-    printf("Mang vua nhap: ");
-    for (i = 0; i < n; i++) {
-        printf("%d ", a[i]);
-    }
-    printf("\n");
+    for (long long i = 2; i * i <= x; i++)
+        if (x % i == 0)
+            return 0;
+
+    return 1;
 }
 
-// ham tim so nguyen to cuoi cung trong mang
-int tim_so_nguyen_to_cuoi(int a[], int n, int *tim_thay) {
-    int i;
+int main()
+{
+    int N = 0;
 
-    *tim_thay = 0;
+    /* Nhap N > 0 */
+    while (1)
+    {
+        char buf[100];
+        nhap_chuoi("so luong phan tu N", buf);
 
-    for (i = n - 1; i >= 0; i--) {
-        if (la_so_nguyen_to(a[i])) {
-            *tim_thay = 1;
-            return a[i];
+        if (la_so_nguyen(buf))
+        {
+            N = (int)to_ll(buf);
+            if (N > 0)
+                break;
+        }
+
+        printf("N phai la so nguyen duong > 0. Nhap lai.\n");
+    }
+
+    char A[200][100];
+
+    /* Nhap mang */
+    printf("\n=== Nhap cac phan tu cua mang A ===\n");
+    for (int i = 0; i < N; i++)
+    {
+        char ten[50];
+        sprintf(ten, "A[%d]", i);
+        nhap_chuoi(ten, A[i]);
+    }
+
+    /* Xuat mang */
+    printf("\n=== Mang A vua nhap ===\n");
+    for (int i = 0; i < N; i++)
+        printf("%s ", A[i]);
+
+    /* Tim so nguyen to cuoi cung */
+    long long so_nt_cuoi = -1;
+
+    for (int i = 0; i < N; i++)
+    {
+        if (la_so_nguyen(A[i])) 	// chi kiem tra so nguyen
+        {
+            long long val = to_ll(A[i]);
+            if (la_nguyen_to(val))
+                so_nt_cuoi = val;
         }
     }
+
+    printf("\n\n=== So nguyen to cuoi cung trong mang ===\n");
+
+    if (so_nt_cuoi == -1)
+        printf("Khong co so nguyen to trong mang.\n");
+    else
+        printf("%lld\n", so_nt_cuoi);
 
     return 0;
 }
-
-int main() {
-    int a[MAX];
-    int n;
-    int kq;
-    int tim_thay;
-
-    nhap_mang(a, &n);
-
-    xuat_mang(a, n);
-
-    kq = tim_so_nguyen_to_cuoi(a, n, &tim_thay);
-
-    if (tim_thay) {
-        printf("So nguyen to cuoi cung trong mang = %d\n", kq);
-    } else {
-        printf("Khong co so nguyen to trong mang\n");
-    }
-
-    return 0;
-}
-
-/*
-YEU CAU BAI 64
-
-a. Nhap mang 1 chieu A co N phan tu
-   - Xuat mang ra man hinh
-
-b. Tim va xuat ra so nguyen to cuoi cung trong mang
-   - Neu khong co, in: "Khong co so nguyen to trong mang"
-
-IDEA
-
-- Duyet mang tu cuoi ve dau
-- Neu gap so nguyen to dau tien thi dung lai
-- Neu khong tim thay thi bao khong co
-*/

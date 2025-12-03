@@ -1,57 +1,77 @@
 #include <stdio.h>
+#include <string.h>
+#include <ctype.h>
 
-// ham nhap mang
-void nhap_mang(int a[], int n) {
-    int i;
-    for (i = 0; i < n; i++) {
-        printf("Nhap a[%d]: ", i);
-        scanf("%d", &a[i]);
-    }
+void nhap_chuoi(const char *ten, char *out)
+{
+    printf("Nhap %s: ", ten);
+    scanf("%s", out);
 }
 
-// ham xuat mang
-void xuat_mang(int a[], int n) {
-    int i;
-    for (i = 0; i < n; i++) {
-        printf("%d ", a[i]);
-    }
-    printf("\n");
+/* Kiem tra chuoi co phai so am */
+int la_so_am(const char *s)
+{
+    return (s[0] == '-');
 }
 
-// ham xoa cac phan tu am
-// tra ve so luong phan tu moi sau khi xoa
-int xoa_phan_tu_am(int a[], int n) {
-    int i, j;
+int main()
+{
+    int n;
 
-    j = 0; // j la chi so cho mang moi
+    /* Nhap n > 0 */
+    while (1)
+    {
+        char buf[50];
+        printf("Nhap so luong phan tu n: ");
+        scanf("%s", buf);
 
-    for (i = 0; i < n; i++) {
-        if (a[i] >= 0) {
-            a[j] = a[i]; // giu lai cac phan tu khong am
-            j++;
+        int hop_le = 1;
+        for (int i = 0; buf[i]; i++)
+            if (!isdigit(buf[i]))
+                hop_le = 0;
+
+        if (hop_le)
+        {
+            n = 0;
+            for (int i = 0; buf[i]; i++)
+                n = n * 10 + (buf[i] - '0');
+
+            if (n > 0) break;
+        }
+
+        printf("n phai la so nguyen duong > 0. Nhap lai.\n");
+    }
+
+    char A[200][100];
+    char B[200][100];
+    int m = 0;
+
+    printf("\n=== Nhap cac phan tu cua mang A ===\n");
+    for (int i = 0; i < n; i++)
+    {
+        char ten[20];
+        sprintf(ten, "A[%d]", i);
+        nhap_chuoi(ten, A[i]);
+    }
+
+    printf("\n=== Mang A vua nhap ===\n");
+    for (int i = 0; i < n; i++)
+        printf("%s ", A[i]);
+
+    printf("\n\n=== Mang A sau khi xoa cac so am ===\n");
+
+    for (int i = 0; i < n; i++)
+    {
+        if (!la_so_am(A[i])) 	// giu so >= 0, ke ca dang 999999999999.123
+        {
+            strcpy(B[m], A[i]);
+            m++;
         }
     }
 
-    return j; // so phan tu moi
-}
+    for (int i = 0; i < m; i++)
+        printf("%s ", B[i]);
 
-int main() {
-    int a[100];
-    int n;
-    int n_moi;
-
-    printf("Nhap so phan tu n: ");
-    scanf("%d", &n);
-
-    nhap_mang(a, n);
-
-    printf("Mang vua nhap: ");
-    xuat_mang(a, n);
-
-    n_moi = xoa_phan_tu_am(a, n);
-
-    printf("Mang sau khi xoa cac phan tu am: ");
-    xuat_mang(a, n_moi);
-
+    printf("\n");
     return 0;
 }
