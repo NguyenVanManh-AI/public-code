@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h>
+#include <math.h>
 
 /* Ham doc chuoi (giu nguyen dang nguoi dung nhap) */
 void nhap_chuoi(const char *ten, char *out)
@@ -42,8 +43,7 @@ int la_chinh_phuong(long long x)
 {
     if (x < 0) return 0;
 
-    long long t = 1;
-    while (t * t < x) t++;
+    long long t = (long long)(sqrt((long double)x) + 0.5);
 
     return (t * t == x);
 }
@@ -68,7 +68,7 @@ int main()
         printf("n phai la so nguyen duong > 0. Nhap lai.\n");
     }
 
-    char A[200][100];
+    char A[300][100];
 
     printf("\n=== Nhap cac phan tu cua mang A ===\n");
     for (int i = 0; i < n; i++)
