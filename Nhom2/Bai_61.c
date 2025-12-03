@@ -1,82 +1,75 @@
 #include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+#include <stdlib.h>
 
-#define MAX 100
+#define MAX 200
 
-// ham kiem tra so nguyen to
-int la_so_nguyen_to(int n) {
-    int i;
+/* Kiểm tra một chuỗi có phải là số nguyên thuần (không chứa dấu chấm) */
+int la_so_nguyen_thuan(const char *s)
+{
+    int i = 0;
 
-    if (n < 2)
-        return 0;
+    if (s[0] == '-' && s[1] != '\0')
+        i = 1;
 
-    for (i = 2; i * i <= n; i++) {
-        if (n % i == 0)
+    for (; s[i] != '\0'; i++)
+        if (!isdigit(s[i]))
             return 0;
-    }
 
     return 1;
 }
 
-// ham nhap mang
-void nhap_mang(int a[], int *n) {
-    int i;
-
-    do {
-        printf("Nhap so luong phan tu n (n >= 15): ");
-        scanf("%d", n);
-
-        if (*n < 15) {
-            printf("n phai lon hon hoac bang 15 !\n");
-        }
-    } while (*n < 15);
-
-    for (i = 0; i < *n; i++) {
-        printf("a[%d] = ", i);
-        scanf("%d", &a[i]);
-    }
+/* Kiểm tra số nguyên tố */
+int la_nguyen_to(long long x)
+{
+    if (x < 2) return 0;
+    for (long long i = 2; i * i <= x; i++)
+        if (x % i == 0)
+            return 0;
+    return 1;
 }
 
-// ham xuat mang
-void xuat_mang(int a[], int n) {
-    int i;
-
-    printf("Mang vua nhap: ");
-    for (i = 0; i < n; i++) {
-        printf("%d ", a[i]);
-    }
-    printf("\n");
-}
-
-// ham tinh tong so nguyen to trong mang
-int tong_so_nguyen_to(int a[], int n) {
-    int i;
-    int tong = 0;
-
-    printf("Cac so nguyen to: ");
-    for (i = 0; i < n; i++) {
-        if (la_so_nguyen_to(a[i])) {
-            printf("%d ", a[i]);
-            tong += a[i];
-        }
-    }
-    printf("\n");
-
-    return tong;
-}
-
-int main() {
-    int a[MAX];
+int main()
+{
     int n;
-    int tong;
+    char A[MAX][100];   // lưu chuỗi người dùng nhập
+    long long val;
+    long long tong = 0;
 
-    nhap_mang(a, &n);
+    printf("Nhap so luong phan tu n (>=15): ");
+    scanf("%d", &n);
 
-    xuat_mang(a, n);
+    while (n < 15)
+    {
+        printf("n phai >= 15. Nhap lai: ");
+        scanf("%d", &n);
+    }
 
-    tong = tong_so_nguyen_to(a, n);
+    printf("\n=== Nhap cac phan tu cua mang A ===\n");
+    for (int i = 0; i < n; i++)
+    {
+        printf("Nhap A[%d]: ", i);
+        scanf("%s", A[i]);
+    }
 
-    printf("Tong cac so nguyen to trong mang = %d\n", tong);
+    printf("\n=== Mang A vua nhap ===\n");
+    for (int i = 0; i < n; i++)
+        printf("%s ", A[i]);
+
+    printf("\n\n=== Tong cac so nguyen to trong mang ===\n");
+
+    for (int i = 0; i < n; i++)
+    {
+        if (la_so_nguyen_thuan(A[i]))      // chỉ nhận như "2" hoặc "17"
+        {
+            val = atoll(A[i]);             // chuyển chuỗi sang số
+            if (la_nguyen_to(val))
+                tong += val;
+        }
+    }
+
+    printf("Tong = %lld\n", tong);
 
     return 0;
 }
-
