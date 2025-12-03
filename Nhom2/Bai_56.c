@@ -2,14 +2,14 @@
 #include <ctype.h>
 #include <string.h>
 
-/* Hàm đọc chuỗi (giữ nguyên dạng người dùng nhập) */
+/* Ham doc chuoi (giu nguyen dang nguoi dung nhap) */
 void nhap_chuoi(const char *ten, char *out)
 {
     printf("Nhap %s: ", ten);
     scanf("%s", out);
 }
 
-/* Kiểm tra chuỗi có phải là số nguyên (không chứa dấu chấm) */
+/* Kiem tra chuoi co phai la so nguyen (khong chua dau cham) */
 int la_so_nguyen(const char *s)
 {
     int i = 0;
@@ -24,7 +24,7 @@ int la_so_nguyen(const char *s)
     return 1;
 }
 
-/* Chuyển chuỗi số nguyên sang long long */
+/* Chuyen chuoi so nguyen sang long long */
 long long to_ll(const char *s)
 {
     long long x = 0;
@@ -37,7 +37,7 @@ long long to_ll(const char *s)
     return dau * x;
 }
 
-/* Kiểm tra số hoàn hảo */
+/* Kiem tra so hoan hao */
 int so_hoan_hao(long long x)
 {
     if (x <= 0) return 0;
@@ -55,7 +55,7 @@ int main()
 {
     int n = 0;
 
-    /* Nhập n, yêu cầu n > 0 */
+    /* Nhap n, yeu cau n > 0 */
     while (1)
     {
         n = 0;
@@ -92,7 +92,7 @@ int main()
 
     for (int i = 0; i < n; i++)
     {
-        if (la_so_nguyen(A[i]))         // chỉ kiểm tra số nguyên
+        if (la_so_nguyen(A[i])) 	// chi kiem tra so nguyen
         {
             long long val = to_ll(A[i]);
             if (so_hoan_hao(val))
