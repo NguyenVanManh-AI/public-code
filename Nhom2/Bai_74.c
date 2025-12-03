@@ -1,100 +1,78 @@
 #include <stdio.h>
+#include <math.h>
 
-/* ham nhap ma tran mxn */
-void nhap_ma_tran(int a[][20], int m, int n) {
-    int i, j;
+#define MAX 50
 
-    for (i = 0; i < m; i++) {
-        for (j = 0; j < n; j++) {
-            printf("A[%d][%d] = ", i, j);
-            scanf("%d", &a[i][j]);
+// --- NHAP MA TRAN ---
+void nhapMat(double a[][MAX], int m, int n) {
+    for(int i = 0; i < m; i++)
+        for(int j = 0; j < n; j++) {
+            printf("A[%d][%d] = ", i+1, j+1);
+            scanf("%lf", &a[i][j]);
         }
-    }
 }
 
-/* ham xuat ma tran */
-void xuat_ma_tran(int a[][20], int m, int n) {
-    int i, j;
-
-    for (i = 0; i < m; i++) {
-        for (j = 0; j < n; j++) {
-            printf("%5d ", a[i][j]);
-        }
+// --- XUAT MA TRAN ---
+void xuatMat(double a[][MAX], int m, int n) {
+    for(int i = 0; i < m; i++) {
+        for(int j = 0; j < n; j++)
+            printf("%20.3Lf      ", a[i][j]);
         printf("\n");
     }
 }
 
-/* ham tim phan tu lon nhat tren 1 hang */
-int tim_lon_nhat_hang(int a[][20], int hang, int n) {
-    int j;
-    int max;
-
-    max = a[hang][0];
-
-    for (j = 1; j < n; j++) {
-        if (a[hang][j] > max) {
-            max = a[hang][j];
-        }
-    }
-
+// --- TIM MAX TREN 1 HANG ---
+double timMaxDong(double a[][MAX], int n, int dong) {
+    double max = a[dong][0];
+    for(int j = 1; j < n; j++)
+        if(a[dong][j] > max) max = a[dong][j];
     return max;
 }
 
-/* ham tinh tong cac gia tri lon nhat tung hang va dua len duong cheo */
-int xu_ly_duong_cheo(int a[][20], int m, int n, int dc[][20]) {
-    int i, j;
-    int tong;
-    int max;
+int main() {
+    int m, n;
+    double A[MAX][MAX];
 
-    tong = 0;
+    // --- NHAP m ---
+    do {
+        printf("Nhap m = ");
+        scanf("%d", &m);
+        if(m <= 0 || m > MAX)
+            printf("m khong hop le! Nhap lai.\n");
+    } while(m <= 0 || m > MAX);
 
-    /* tao ma tran m x m voi duong cheo la gia tri lon nhat moi hang */
-    for (i = 0; i < m; i++) {
+    // --- NHAP n ---
+    do {
+        printf("Nhap n = ");
+        scanf("%d", &n);
+        if(n <= 0 || n > MAX)
+            printf("n khong hop le! Nhap lai.\n");
+    } while(n <= 0 || n > MAX);
 
-        max = tim_lon_nhat_hang(a, i, n);
-        tong += max;
+    printf("Nhap ma tran A:\n");
+    nhapMat(A, m, n);
 
-        for (j = 0; j < m; j++) {
-            if (j == i) {
-                dc[i][j] = max;
-            } else {
-                dc[i][j] = 0;
-            }
-        }
+    printf("\nMa tran A vua nhap:\n");
+    xuatMat(A, m, n);
+
+    // --- KIEM TRA MA TRAN VUONG ---
+    if(m != n) {
+        printf("\nKhong phai la ma tran vuong, nen khong co duong cheo chinh!\n");
+        return 0;
     }
 
-    return tong;
-}
+    // --- DUA MAX TUNG HANG LEN DUONG CHEO CHINH ---
+    double sum = 0;
+    for(int i = 0; i < n; i++) {
+        double maxx = timMaxDong(A, n, i);
+        A[i][i] = maxx; 	// chi GHI DE, khong doi cho
+        sum += maxx;
+    }
 
-int main() {
-    int a[20][20];
-    int dc[20][20];
-    int m, n;
-    int tong;
+    printf("\nMa tran sau khi dua max tung hang len duong cheo chinh:\n");
+    xuatMat(A, m, n);
 
-    printf("Nhap so dong m: ");
-    scanf("%d", &m);
-
-    printf("Nhap so cot n: ");
-    scanf("%d", &n);
-
-    nhap_ma_tran(a, m, n);
-
-    printf("\nMa tran A:\n");
-    xuat_ma_tran(a, m, n);
-
-    tong = xu_ly_duong_cheo(a, m, n, dc);
-
-    printf("\nMa tran duong cheo tu phan tu lon nhat moi hang:\n");
-    xuat_ma_tran(dc, m, m);
-
-    printf("\nTong cac phan tu lon nhat moi hang = %d\n", tong);
+    printf("\nTong cac phan tu duoc dua len duong cheo = %.3lf\n", sum);
 
     return 0;
 }
-/*
-Moi hang tim phan tu lon nhat
-Dua phan tu lon nhat do len duong cheo chinh cua ma tran m x m
-Cac vi tri khac tren ma tran duong cheo gan 0
-Cong tat ca gia tri lon nhat lai
-*/
