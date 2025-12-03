@@ -1,95 +1,64 @@
 #include <stdio.h>
 
-/* ham nhap ma tran nxn */
-void nhap_ma_tran(int a[][20], int n) {
-    int i, j;
-
-    for (i = 0; i < n; i++) {
-        for (j = 0; j < n; j++) {
-            printf("A[%d][%d] = ", i, j);
-            scanf("%d", &a[i][j]);
+void nhapMaTran(double a[][50], int n) {
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < n; j++) {
+            printf("A[%d][%d] = ", i + 1, j + 1);
+            scanf("%lf", &a[i][j]);
         }
-    }
 }
 
-/* ham xuat ma tran */
-void xuat_ma_tran(int a[][20], int n) {
-    int i, j;
-
-    for (i = 0; i < n; i++) {
-        for (j = 0; j < n; j++) {
-            printf("%5d ", a[i][j]);
-        }
+void xuatMaTran(double a[][50], int n) {
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++)
+            printf("%15.3lf ", a[i][j]); 	// in dep, du khoang cach
         printf("\n");
     }
 }
 
-/* ham tim lon nhat tren 1 hang */
-int tim_lon_nhat_hang(int a[][20], int hang, int n) {
-    int j;
-    int max;
-
-    max = a[hang][0];
-
-    for (j = 1; j < n; j++) {
-        if (a[hang][j] > max) {
-            max = a[hang][j];
-        }
-    }
-
+double timMaxDong(double a[][50], int n, int dong) {
+    double max = a[dong][0];
+    for (int j = 1; j < n; j++)
+        if (a[dong][j] > max)
+            max = a[dong][j];
     return max;
 }
 
-/* ham tao ma tran duong cheo chinh voi max moi hang */
-int xu_ly_duong_cheo(int a[][20], int n, int dc[][20]) {
-    int i, j;
-    int max;
-    int tong;
+int main() {
+    int n;
 
-    tong = 0;
+    // Nhap n > 0
+    do {
+        printf("Nhap n (n > 0): ");
+        scanf("%d", &n);
+        if (n <= 0) printf("n phai > 0, vui long nhap lai!\n");
+    } while (n <= 0);
 
-    for (i = 0; i < n; i++) {
-        max = tim_lon_nhat_hang(a, i, n);
-        tong += max;
+    double A[50][50];
 
-        for (j = 0; j < n; j++) {
-            if (j == i) {
-                dc[i][j] = max;   /* dua max len duong cheo chinh */
-            } else {
-                dc[i][j] = 0;
-            }
-        }
+    // Nhap ma tran
+    printf("Nhap ma tran A:\n");
+    nhapMaTran(A, n);
+
+    // Xuat ma tran ban dau
+    printf("\nMa tran A vua nhap:\n");
+    xuatMaTran(A, n);
+
+    double sum = 0;
+
+    // Dua max moi hang len duong cheo chinh
+    for (int i = 0; i < n; i++) {
+        double maxVal = timMaxDong(A, n, i);
+        A[i][i] = maxVal;
+        sum += maxVal;
     }
 
-    return tong;
-}
+    // Xuat ma tran sau khi xu ly
+    printf("\nMa tran sau khi dua max tung hang len duong cheo chinh:\n");
+    xuatMaTran(A, n);
 
-int main() {
-    int a[20][20];
-    int dc[20][20];
-    int n;
-    int tong;
-
-    printf("Nhap cap ma tran n: ");
-    scanf("%d", &n);
-
-    nhap_ma_tran(a, n);
-
-    printf("\nMa tran A:\n");
-    xuat_ma_tran(a, n);
-
-    tong = xu_ly_duong_cheo(a, n, dc);
-
-    printf("\nMa tran duong cheo chinh voi gia tri lon nhat moi hang:\n");
-    xuat_ma_tran(dc, n);
-
-    printf("\nTong cac phan tu lon nhat moi hang = %d\n", tong);
+    // Tong
+    printf("\nTong cac phan tu lon nhat duoc dua len duong cheo = %.3lf\n", sum);
 
     return 0;
 }
-/*
-Tim phan tu lon nhat cua tung hang
-Dua no len duong cheo chinh
-Gan cac phan tu khac = 0
-Tinh tong cac gia tri lon nhat do
-*/
