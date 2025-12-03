@@ -5,7 +5,7 @@
 
 #define MAX 200
 
-/* Kiểm tra một chuỗi có phải là số nguyên thuần (không chứa dấu chấm) */
+/* Kiem tra mot chuoi co phai la so nguyen thuan (khong chua dau cham) */
 int la_so_nguyen_thuan(const char *s)
 {
     int i = 0;
@@ -20,7 +20,7 @@ int la_so_nguyen_thuan(const char *s)
     return 1;
 }
 
-/* Kiểm tra số nguyên tố */
+/* Kiem tra so nguyen to */
 int la_nguyen_to(long long x)
 {
     if (x < 2) return 0;
@@ -33,7 +33,7 @@ int la_nguyen_to(long long x)
 int main()
 {
     int n;
-    char A[MAX][100];   // lưu chuỗi người dùng nhập
+    char A[MAX][100]; 	// luu chuoi nguoi dung nhap
     long long val;
     long long tong = 0;
 
@@ -61,9 +61,9 @@ int main()
 
     for (int i = 0; i < n; i++)
     {
-        if (la_so_nguyen_thuan(A[i]))      // chỉ nhận như "2" hoặc "17"
+        if (la_so_nguyen_thuan(A[i])) 	// chi nhan nhu "2" hoac "17"
         {
-            val = atoll(A[i]);             // chuyển chuỗi sang số
+            val = atoll(A[i]); 	// chuyen chuoi sang so
             if (la_nguyen_to(val))
                 tong += val;
         }
