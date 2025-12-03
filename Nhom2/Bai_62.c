@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <ctype.h>
 
-/* Hàm nhập số nguyên không cho 2.0, 5.5, +3,... */
+/* Ham nhap so nguyen khong cho 2.0, 5.5, +3,... */
 long long nhap_so_tu_nhien(const char *ten)
 {
     char s[100];
@@ -13,7 +13,7 @@ long long nhap_so_tu_nhien(const char *ten)
 
         int i = 0;
 
-        /* Không cho phép số âm và ký tự lạ */
+        /* Khong cho phep so am va ky tu la */
         for (; s[i] != '\0'; i++)
         {
             if (!isdigit(s[i]))
@@ -29,14 +29,14 @@ long long nhap_so_tu_nhien(const char *ten)
             for (i = 0; s[i] != '\0'; i++)
                 x = x * 10 + (s[i] - '0');
 
-            return x; /* số tự nhiên */
+            return x; /* so tu nhien */
         }
 
         printf("Gia tri khong hop le. Nhap lai.\n");
     }
 }
 
-/* Đếm số mũ của 2 hoặc 5 trong phân tích thừa số của x */
+/* Dem so mu cua 2 hoac 5 trong phan tich thua so cua x */
 long long dem_so_mu(long long x, int p)
 {
     long long dem = 0;
@@ -71,7 +71,7 @@ int main()
     for (long long i = 0; i < n; i++)
         printf("%lld ", A[i]);
 
-    /* Tính số 0 tận cùng */
+    /* Tinh so 0 tan cung */
     long long tong_mu2 = 0, tong_mu5 = 0;
 
     for (long long i = 0; i < n; i++)
