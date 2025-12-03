@@ -1,154 +1,170 @@
 #include <stdio.h>
 
-// Ham nhap tap hop (khong cho trung nhau)
-void nhap_tap(int a[], int *n) {
-    int i, j, x, hop_le;
+#define MAX 1000
 
-    printf("Nhap so phan tu: ");
-    scanf("%d", n);
+// Ham loai bo trung lap trong mang
+int loaiBoTrungLap(int a[], int n) {
+    int b[MAX], m = 0;
 
-    for (i = 0; i < *n; i++) {
-        do {
-            hop_le = 1;
-            printf("Nhap phan tu thu %d: ", i + 1);
-            scanf("%d", &x);
-
-            // Kiem tra trung
-            for (j = 0; j < i; j++) {
-                if (a[j] == x) {
-                    hop_le = 0;
-                    printf("Phan tu bi trung, moi nhap lai.\n");
-                }
+    for (int i = 0; i < n; i++) {
+        int tonTai = 0;
+        for (int j = 0; j < m; j++) {
+            if (a[i] == b[j]) {
+                tonTai = 1;
+                break;
             }
-        } while (!hop_le);
-
-        a[i] = x;
-    }
-}
-
-// Ham xuat tap hop
-void xuat_tap(int a[], int n) {
-    int i;
-    printf("{ ");
-    for (i = 0; i < n; i++) {
-        printf("%d ", a[i]);
-    }
-    printf("}\n");
-}
-
-// Ham kiem tra phan tu co thuoc tap hay khong
-int thuoc_tap(int a[], int n, int x) {
-    int i;
-    for (i = 0; i < n; i++) {
-        if (a[i] == x) return 1;
-    }
-    return 0;
-}
-
-// Ham tinh tap hop
-void tap_hop(int a[], int na, int b[], int nb, int c[], int *nc) {
-    int i;
-
-    *nc = 0;
-
-    // Them A vao C
-    for (i = 0; i < na; i++) {
-        c[*nc] = a[i];
-        (*nc)++;
-    }
-
-    // Them B vao C neu khong trung
-    for (i = 0; i < nb; i++) {
-        if (!thuoc_tap(c, *nc, b[i])) {
-            c[*nc] = b[i];
-            (*nc)++;
+        }
+        if (!tonTai) {
+            b[m++] = a[i];
         }
     }
+
+    for (int i = 0; i < m; i++)
+        a[i] = b[i];
+
+    return m;
 }
 
-// Ham tinh tap giao
-void tap_giao(int a[], int na, int b[], int nb, int c[], int *nc) {
-    int i;
+// Hop hai tap hop
+int hop(int a[], int na, int b[], int nb, int kq[]) {
+    int m = 0;
 
-    *nc = 0;
+    // Them tat ca phan tu cua A
+    for (int i = 0; i < na; i++)
+        kq[m++] = a[i];
 
-    for (i = 0; i < na; i++) {
-        if (thuoc_tap(b, nb, a[i])) {
-            c[*nc] = a[i];
-            (*nc)++;
+    // Them phan tu cua B neu chua co trong ket qua
+    for (int i = 0; i < nb; i++) {
+        int tonTai = 0;
+        for (int j = 0; j < m; j++) {
+            if (b[i] == kq[j]) {
+                tonTai = 1;
+                break;
+            }
+        }
+        if (!tonTai)
+            kq[m++] = b[i];
+    }
+
+    return m;
+}
+
+// Giao hai tap hop
+int giao(int a[], int na, int b[], int nb, int kq[]) {
+    int m = 0;
+
+    for (int i = 0; i < na; i++) {
+        for (int j = 0; j < nb; j++) {
+            if (a[i] == b[j]) {
+                kq[m++] = a[i];
+                break;
+            }
         }
     }
+
+    return m;
 }
 
-// Ham tinh tap hieu (A - B)
-void tap_hieu(int a[], int na, int b[], int nb, int c[], int *nc) {
-    int i;
+// Hieu A - B
+int hieu(int a[], int na, int b[], int nb, int kq[]) {
+    int m = 0;
 
-    *nc = 0;
-
-    for (i = 0; i < na; i++) {
-        if (!thuoc_tap(b, nb, a[i])) {
-            c[*nc] = a[i];
-            (*nc)++;
+    for (int i = 0; i < na; i++) {
+        int tonTai = 0;
+        for (int j = 0; j < nb; j++) {
+            if (a[i] == b[j]) {
+                tonTai = 1;
+                break;
+            }
         }
+        if (!tonTai)
+            kq[m++] = a[i];
     }
+
+    return m;
 }
 
-// Ham kiem tra A co la tap con cua B hay khong
-int la_tap_con(int a[], int na, int b[], int nb) {
-    int i;
-
-    for (i = 0; i < na; i++) {
-        if (!thuoc_tap(b, nb, a[i])) {
-            return 0; // Co phan tu khong thuoc B
+// Kiem tra A co la tap con cua B hay khong
+int tapCon(int a[], int na, int b[], int nb) {
+    for (int i = 0; i < na; i++) {
+        int timThay = 0;
+        for (int j = 0; j < nb; j++) {
+            if (a[i] == b[j]) {
+                timThay = 1;
+                break;
+            }
         }
+        if (!timThay)
+            return 0;
     }
     return 1;
 }
 
+// Ham in tap hop
+void inTap(int a[], int n) {
+    printf("{ ");
+    for (int i = 0; i < n; i++)
+        printf("%d ", a[i]);
+    printf("}\n");
+}
+
+// ================== MAIN ==================
 int main() {
-    int A[100], B[100], C[100];
-    int na, nb, nc;
-    int lua_chon;
+    int A[MAX], B[MAX], nA, nB;
 
-    printf("Nhap tap hop A:\n");
-    nhap_tap(A, &na);
+    printf("Nhap so phan tu tap A: ");
+    scanf("%d", &nA);
+    if(nA > 0) {
+        printf("Nhap cac phan tu tap A: ");
+        for (int i = 0; i < nA; i++)
+            scanf("%d", &A[i]);
+    }
+    printf("Nhap so phan tu tap B: ");
+    scanf("%d", &nB);
+    if(nB > 0) {
+        printf("Nhap cac phan tu tap B: ");
+        for (int i = 0; i < nB; i++)
+            scanf("%d", &B[i]);
+    }
 
-    printf("Nhap tap hop B:\n");
-    nhap_tap(B, &nb);
+    // Loai bo trung lap
+    nA = loaiBoTrungLap(A, nA);
+    nB = loaiBoTrungLap(B, nB);
 
-    printf("\nChon phep toan:\n");
-    printf("1. Hop\n");
-    printf("2. Giao\n");
-    printf("3. Hieu A - B\n");
-    printf("4. Kiem tra A la tap con cua B\n");
-    printf("Nhap lua chon: ");
-    scanf("%d", &lua_chon);
+    int KQ[MAX];
+    int nKQ;
 
-    if (lua_chon == 1) {
-        tap_hop(A, na, B, nb, C, &nc);
-        printf("Tap hop A ∪ B = ");
-        xuat_tap(C, nc);
-    }
-    else if (lua_chon == 2) {
-        tap_giao(A, na, B, nb, C, &nc);
-        printf("Tap giao A ∩ B = ");
-        xuat_tap(C, nc);
-    }
-    else if (lua_chon == 3) {
-        tap_hieu(A, na, B, nb, C, &nc);
-        printf("Tap hieu A - B = ");
-        xuat_tap(C, nc);
-    }
-    else if (lua_chon == 4) {
-        if (la_tap_con(A, na, B, nb))
-            printf("A la tap con cua B\n");
-        else
-            printf("A KHONG phai la tap con cua B\n");
-    }
-    else {
-        printf("Lua chon khong hop le.\n");
-    }
+    printf("\nTap A: ");
+    inTap(A, nA);
+
+    printf("Tap B: ");
+    inTap(B, nB);
+
+    // Hop
+    nKQ = hop(A, nA, B, nB, KQ);
+    printf("\nHop (A union B): ");
+    inTap(KQ, nKQ);
+
+    // Giao
+    nKQ = giao(A, nA, B, nB, KQ);
+    printf("Giao (A intersect B): ");
+    inTap(KQ, nKQ);
+
+    // Hieu A - B
+    nKQ = hieu(A, nA, B, nB, KQ);
+    printf("Hieu (A - B): ");
+    inTap(KQ, nKQ);
+
+    // Kiem tra tap con
+    if (tapCon(A, nA, B, nB))
+        printf("\nTap A la tap con cua tap B\n");
+    else
+        printf("\nTap A khong la tap con cua tap B\n");
+
+    if (tapCon(B, nB, A, nA))
+        printf("Tap B la tap con cua tap A\n");
+    else
+        printf("Tap B khong la tap con cua tap A\n");
 
     return 0;
 }
