@@ -2,7 +2,7 @@
 #include <string.h>
 #include <ctype.h>
 
-/* Hàm nhập số nguyên nghiêm ngặt, trả về long long */
+/* Ham nhap so nguyen nghiem ngat, tra ve long long */
 long long nhap_so_nguyen(const char *ten)
 {
     char s[200];
@@ -14,11 +14,11 @@ long long nhap_so_nguyen(const char *ten)
 
         int i = 0;
 
-        /* Cho phép số âm */
+        /* Cho phep so am */
         if (s[0] == '-' && s[1] != '\0')
             i = 1;
 
-        /* Kiểm tra từng ký tự */
+        /* Kiem tra tung ky tu */
         for (; s[i] != '\0'; i++)
         {
             if (!isdigit(s[i]))
@@ -34,7 +34,7 @@ long long nhap_so_nguyen(const char *ten)
             int dau = (s[0] == '-') ? -1 : 1;
             i = (s[0] == '-') ? 1 : 0;
 
-            /* Chuyển chuỗi sang số long long */
+            /* Chuyen chuoi sang so long long */
             for (; s[i] != '\0'; i++)
                 x = x * 10 + (s[i] - '0');
 
@@ -45,7 +45,7 @@ long long nhap_so_nguyen(const char *ten)
     }
 }
 
-/* Hàm xóa phần tử tại vị trí k */
+/* Ham xoa phan tu tai vi tri k */
 void xoa_vi_tri(long long A[], int *n, int k)
 {
     for (int i = k; i < *n - 1; i++)
@@ -72,7 +72,7 @@ int main()
         A[i] = nhap_so_nguyen(ten);
     }
 
-    /* Nhập vị trí k */
+    /* Nhap vi tri k */
     int k = (int)nhap_so_nguyen("chi so k can xoa");
     while (k < 0 || k >= n)
     {
@@ -80,10 +80,10 @@ int main()
         k = (int)nhap_so_nguyen("chi so k can xoa");
     }
 
-    /* Xóa phần tử */
+    /* Xoa phan tu */
     xoa_vi_tri(A, &n, k);
 
-    /* Xuất kết quả */
+    /* Xuat ket qua */
     printf("\n=== Mang sau khi xoa A[%d] ===\n", k);
     for (int i = 0; i < n; i++)
         printf("%lld ", A[i]);
