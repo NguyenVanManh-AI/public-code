@@ -1,138 +1,82 @@
 #include <stdio.h>
 
-// ham tao ma tran xoan tu ngoai vao trong
-void tao_xoan_ngoai_vao(int a[][100], int n, int m) {
-    int top, bottom, left, right;
-    int num;
-
-    top = 0;
-    bottom = n - 1;
-    left = 0;
-    right = m - 1;
-    num = 1;
-
-    while (top <= bottom && left <= right) {
-
-        // chay hang tren
-        int j;
-        for (j = left; j <= right; j++) {
-            a[top][j] = num++;
-        }
-        top++;
-
-        // chay cot ben phai
-        int i;
-        for (i = top; i <= bottom; i++) {
-            a[i][right] = num++;
-        }
-        right--;
-
-        // chay hang duoi
-        if (top <= bottom) {
-            for (j = right; j >= left; j--) {
-                a[bottom][j] = num++;
-            }
-            bottom--;
-        }
-
-        // chay cot ben trai
-        if (left <= right) {
-            for (i = bottom; i >= top; i--) {
-                a[i][left] = num++;
-            }
-            left++;
-        }
-    }
-}
-
-// ham tao ma tran xoan tu trong ra ngoai
-void tao_xoan_trong_ra(int a[][100], int n, int m) {
-    int top, bottom, left, right;
-    int num;
-
-    top = 0;
-    bottom = n - 1;
-    left = 0;
-    right = m - 1;
-
-    num = n * m; // so lon nhat o tam
-
-    while (top <= bottom && left <= right) {
-
-        // chay hang tren
-        int j;
-        for (j = left; j <= right; j++) {
-            a[top][j] = num--;
-        }
-        top++;
-
-        // chay cot ben phai
-        int i;
-        for (i = top; i <= bottom; i++) {
-            a[i][right] = num--;
-        }
-        right--;
-
-        // chay hang duoi
-        if (top <= bottom) {
-            for (j = right; j >= left; j--) {
-                a[bottom][j] = num--;
-            }
-            bottom--;
-        }
-
-        // chay cot ben trai
-        if (left <= right) {
-            for (i = bottom; i >= top; i--) {
-                a[i][left] = num--;
-            }
-            left++;
-        }
-    }
-}
-
-// ham xuat ma tran
-void xuat(int a[][100], int n, int m) {
-    int i, j;
-    for (i = 0; i < n; i++) {
-        for (j = 0; j < m; j++) {
-            printf("%4d", a[i][j]);
-        }
+void xuatMat(int a[][100], int n, int m) {
+    for(int i = 0; i < n; i++) {
+        for(int j = 0; j < m; j++)
+            printf("%5d ", a[i][j]);
         printf("\n");
     }
 }
 
+// a. Tạo ma trận xoắn từ ngoài vào trong
+void xoanNgoaiVao(int a[][100], int n, int m) {
+    int top = 0, bottom = n - 1, left = 0, right = m - 1;
+    int num = 1;
+
+    while (top <= bottom && left <= right) {
+        for (int j = left; j <= right; j++) a[top][j] = num++;
+        top++;
+
+        for (int i = top; i <= bottom; i++) a[i][right] = num++;
+        right--;
+
+        if (top <= bottom) {
+            for (int j = right; j >= left; j--) a[bottom][j] = num++;
+            bottom--;
+        }
+
+        if (left <= right) {
+            for (int i = bottom; i >= top; i--) a[i][left] = num++;
+            left++;
+        }
+    }
+}
+
+// b. Tạo ma trận xoắn từ trong ra ngoài
+void xoanTrongRaNgoai(int a[][100], int n, int m) {
+    int top = 0, bottom = n - 1, left = 0, right = m - 1;
+    int num = n * m;
+
+    while (top <= bottom && left <= right) {
+        for (int j = left; j <= right; j++) a[top][j] = num--;
+        top++;
+
+        for (int i = top; i <= bottom; i++) a[i][right] = num--;
+        right--;
+
+        if (top <= bottom) {
+            for (int j = right; j >= left; j--) a[bottom][j] = num--;
+            bottom--;
+        }
+
+        if (left <= right) {
+            for (int i = bottom; i >= top; i--) a[i][left] = num--;
+            left++;
+        }
+    }
+}
+
 int main() {
-    int a[100][100];
     int n, m;
+    int A[100][100];
 
-    printf("Nhap so dong: ");
-    scanf("%d", &n);
-    printf("Nhap so cot: ");
-    scanf("%d", &m);
+    do {
+        printf("Nhap so dong n > 0: ");
+        scanf("%d", &n);
+    } while (n <= 0);
 
-    printf("\nMa tran xoan tu ngoai vao trong:\n");
-    tao_xoan_ngoai_vao(a, n, m);
-    xuat(a, n, m);
+    do {
+        printf("Nhap so cot m > 0: ");
+        scanf("%d", &m);
+    } while (m <= 0);
 
-    printf("\nMa tran xoan tu trong ra ngoai:\n");
-    tao_xoan_trong_ra(a, n, m);
-    xuat(a, n, m);
+    printf("\n--- Ma tran xoan tu ngoai vao trong ---\n");
+    xoanNgoaiVao(A, n, m);
+    xuatMat(A, n, m);
+
+    printf("\n--- Ma tran xoan tu trong ra ngoai ---\n");
+    xoanTrongRaNgoai(A, n, m);
+    xuatMat(A, n, m);
 
     return 0;
 }
-/**
-Ngoai -> Trong 
-1   2   3   4   5
-16  17  18  19   6
-15  24  25  20   7
-14  23  22  21   8
-13  12  11  10   9
-
-Trong -> Ngoai 
-25  24  23  22  21
-10   9   8   7  20
-11   2   1   6  19
-12   3   4   5  18
-13  14  15  16  17
-*/
