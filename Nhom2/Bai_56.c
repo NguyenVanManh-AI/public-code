@@ -1,88 +1,122 @@
 #include <stdio.h>
+#include <ctype.h>
+#include <string.h>
+#include <limits.h>
 
-#define MAX 100
+/* Hàm nhập số nguyên nghiêm ngặt + KHÔNG CHO 6.0 */
+long long nhap_so_nguyen_ll(const char *ten)
+{
+    char s[100];
+    while (1)
+    {
+        int hop_le = 1;
+        printf("Nhap %s: ", ten);
+        scanf("%s", s);
 
-// ham nhap mang
-void nhap_mang(int a[], int *n) {
-    int i;
+        int i = 0;
 
-    printf("Nhap so luong phan tu n: ");
-    scanf("%d", n);
+        /* cho phép dấu âm */
+        if (s[0] == '-' && s[1] != '\0')
+            i = 1;
 
-    for (i = 0; i < *n; i++) {
-        printf("a[%d] = ", i);
-        scanf("%d", &a[i]);
-    }
-}
-
-// ham xuat mang
-void xuat_mang(int a[], int n) {
-    int i;
-
-    for (i = 0; i < n; i++) {
-        printf("%d ", a[i]);
-    }
-    printf("\n");
-}
-
-// ham kiem tra so hoan hao
-int la_so_hoan_hao(int n) {
-    int i;
-    int tong = 0;
-
-    if (n <= 0)
-        return 0;
-
-    for (i = 1; i <= n / 2; i++) {
-        if (n % i == 0) {
-            tong += i;
+        /* kiểm tra từng ký tự phải là chữ số */
+        for (; s[i] != '\0'; i++)
+        {
+            if (!isdigit(s[i]))
+            {
+                hop_le = 0;
+                break;
+            }
         }
-    }
 
-    if (tong == n)
-        return 1;
-    else
-        return 0;
-}
-
-// ham xuat cac so hoan hao trong mang
-void xuat_so_hoan_hao(int a[], int n) {
-    int i;
-    int dem = 0;
-
-    printf("Cac so hoan hao trong mang: ");
-
-    for (i = 0; i < n; i++) {
-        if (la_so_hoan_hao(a[i]) == 1) {
-            printf("%d ", a[i]);
-            dem++;
+        if (!hop_le)
+        {
+            printf("Gia tri khong hop le (chi nhap so nguyen). Nhap lai.\n");
+            continue;
         }
-    }
 
-    if (dem == 0) {
-        printf("Khong co so hoan hao nao");
-    }
+        /* kiểm tra tràn long long khi convert */
+        long long x = 0;
+        int dau = (s[0] == '-') ? -1 : 1;
+        i = (s[0] == '-') ? 1 : 0;
 
-    printf("\n");
+        for (; s[i] != '\0'; i++)
+        {
+            int digit = s[i] - '0';
+
+            /* kiểm tra tràn trước khi x = x*10 + digit */
+            if (x > (LLONG_MAX - digit) / 10)
+            {
+                hop_le = 0;
+                break;
+            }
+
+            x = x * 10 + digit;
+        }
+
+        if (!hop_le)
+        {
+            printf("So qua lon, vuot gioi han long long. Nhap lai.\n");
+            continue;
+        }
+
+        return dau * x;
+    }
 }
 
-int main() {
-    int a[MAX];
+/* Hàm kiểm tra số hoàn hảo */
+int so_hoan_hao(long long x)
+{
+    if (x <= 0) return 0;
+
+    long long sum = 0;
+    for (long long i = 1; i <= x / 2; i++)
+        if (x % i == 0)
+            sum += i;
+
+    return (sum == x);
+}
+
+int main()
+{
     int n;
 
-    nhap_mang(a, &n);
+    /* giữ nguyên cách nhập n của bạn */
+    n = nhap_so_nguyen_ll("so luong phan tu n");
+    while (n <= 0)
+    {
+        printf("n phai > 0. Nhap lai.\n");
+        n = nhap_so_nguyen_ll("so luong phan tu n");
+    }
 
-    printf("Mang vua nhap:\n");
-    xuat_mang(a, n);
+    long long A[200];
 
-    xuat_so_hoan_hao(a, n);
+    printf("\n=== Nhap cac phan tu cua mang A ===\n");
+    for (int i = 0; i < n; i++)
+    {
+        char ten[50];
+        sprintf(ten, "A[%d]", i);
+        A[i] = nhap_so_nguyen_ll(ten);
+    }
 
+    printf("\n=== Mang A vua nhap ===\n");
+    for (int i = 0; i < n; i++)
+        printf("%lld ", A[i]);
+
+    printf("\n\n=== Cac so hoan hao trong mang ===\n");
+    int co = 0;
+    for (int i = 0; i < n; i++)
+    {
+        if (so_hoan_hao(A[i]))
+        {
+            printf("%lld ", A[i]);
+            co = 1;
+        }
+    }
+
+    if (!co)
+        printf("Khong co so hoan hao nao.");
+
+    printf("\n");
     return 0;
 }
-
-/*
-b. So hoan hao:
-   - La so nguyen duong
-   - Bang tong cac uoc thuc su cua no (khong ke chinh no)
-   - Vi du: 6 = 1 + 2 + 3
-*/
