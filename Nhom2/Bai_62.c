@@ -1,85 +1,89 @@
 #include <stdio.h>
+#include <ctype.h>
 
-#define MAX 100
+/* Hàm nhập số nguyên không cho 2.0, 5.5, +3,... */
+long long nhap_so_tu_nhien(const char *ten)
+{
+    char s[100];
+    while (1)
+    {
+        int hop_le = 1;
+        printf("Nhap %s: ", ten);
+        scanf("%s", s);
 
-// ham nhap mang so tu nhien
-void nhap_mang(int a[], int *n) {
-    int i;
+        int i = 0;
 
-    do {
-        printf("Nhap so luong phan tu n (n > 0): ");
-        scanf("%d", n);
-
-        if (*n <= 0) {
-            printf("n phai lon hon 0 !\n");
-        }
-    } while (*n <= 0);
-
-    for (i = 0; i < *n; i++) {
-        do {
-            printf("a[%d] = ", i);
-            scanf("%d", &a[i]);
-
-            if (a[i] < 0) {
-                printf("Chi duoc nhap so tu nhien (>= 0) !\n");
+        /* Không cho phép số âm và ký tự lạ */
+        for (; s[i] != '\0'; i++)
+        {
+            if (!isdigit(s[i]))
+            {
+                hop_le = 0;
+                break;
             }
-        } while (a[i] < 0);
+        }
+
+        if (hop_le)
+        {
+            long long x = 0;
+            for (i = 0; s[i] != '\0'; i++)
+                x = x * 10 + (s[i] - '0');
+
+            return x; /* số tự nhiên */
+        }
+
+        printf("Gia tri khong hop le. Nhap lai.\n");
     }
 }
 
-// ham dem so luong so 0 tan cung cua tich
-int dem_so_0_tan_cung(int a[], int n) {
-    int i;
-    int dem_2 = 0;
-    int dem_5 = 0;
-    int temp;
-
-    // dem so lan xuat hien cua 2 va 5 trong cac thua so
-    for (i = 0; i < n; i++) {
-        temp = a[i];
-
-        while (temp % 2 == 0 && temp != 0) {
-            dem_2++;
-            temp /= 2;
-        }
-
-        while (temp % 5 == 0 && temp != 0) {
-            dem_5++;
-            temp /= 5;
-        }
+/* Đếm số mũ của 2 hoặc 5 trong phân tích thừa số của x */
+long long dem_so_mu(long long x, int p)
+{
+    long long dem = 0;
+    while (x % p == 0 && x > 0)
+    {
+        dem++;
+        x /= p;
     }
-
-    // so luong so 0 tan cung la min(dem_2, dem_5)
-    if (dem_2 < dem_5)
-        return dem_2;
-    else
-        return dem_5;
+    return dem;
 }
 
-int main() {
-    int a[MAX];
-    int n;
-    int so_0;
+int main()
+{
+    long long n = nhap_so_tu_nhien("so luong phan tu n");
+    while (n <= 0)
+    {
+        printf("n phai > 0. Nhap lai.\n");
+        n = nhap_so_tu_nhien("so luong phan tu n");
+    }
 
-    nhap_mang(a, &n);
+    long long A[250];
 
-    so_0 = dem_so_0_tan_cung(a, n);
+    printf("\n=== Nhap cac so tu nhien ===\n");
+    for (long long i = 0; i < n; i++)
+    {
+        char ten[50];
+        sprintf(ten, "A[%lld]", i);
+        A[i] = nhap_so_tu_nhien(ten);
+    }
 
-    printf("So luong so 0 tan cung cua tich = %d\n", so_0);
+    printf("\n=== Day so vua nhap ===\n");
+    for (long long i = 0; i < n; i++)
+        printf("%lld ", A[i]);
+
+    /* Tính số 0 tận cùng */
+    long long tong_mu2 = 0, tong_mu5 = 0;
+
+    for (long long i = 0; i < n; i++)
+    {
+        tong_mu2 += dem_so_mu(A[i], 2);
+        tong_mu5 += dem_so_mu(A[i], 5);
+    }
+
+    long long so_0_tan_cung = (tong_mu2 < tong_mu5) ? tong_mu2 : tong_mu5;
+
+    printf("\n\n=== So chu so 0 tan cung cua tich ===\n");
+    printf("Ket qua: %lld\n", so_0_tan_cung);
 
     return 0;
 }
-
-/*
-YEU CAU BAI 62
-
-a. Nhap cac so tu nhien tu ban phim
-b. Dem xem tich cac so do co bao nhieu so 0 o tan cung
-
-IDEA
-
-- So 0 tan cung xuat hien do cap (2 * 5)
-- Dem so lan xuat hien cua 2 va 5 trong cac thua so
-- So 0 tan cung = min(so lan co 2, so lan co 5)
-- Khong can tinh truc tiep tich vi so rat lon
-*/
