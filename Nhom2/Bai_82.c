@@ -18,7 +18,7 @@ int la_so_nguyen(const char *s)
     if (s[0] == '-' && s[1] != '\0')
         i = 1;
 
-    /* Duyet cac ky tu, neu co ky tu nao khong phai chu so thi sai */
+    /* Kiem tra tung ky tu */
     for (; s[i]; i++)
         if (!isdigit(s[i]))
             return 0;
@@ -33,7 +33,7 @@ long long to_ll(const char *s)
     int dau = (s[0] == '-') ? -1 : 1;
     int i = (s[0] == '-') ? 1 : 0;
 
-    /* Nhan 10 va cong them tung chu so */
+    /* Xu ly tung ky tu so */
     for (; s[i]; i++)
         x = x * 10 + (s[i] - '0');
 
@@ -42,8 +42,9 @@ long long to_ll(const char *s)
 
 /* Ham xuat ma tran */
 void xuatMat(int a[][100], int n, int m) {
-    for(int i = 0; i < n; i++) {
-        for(int j = 0; j < m; j++)
+    int i, j;
+    for(i = 0; i < n; i++) {
+        for(j = 0; j < m; j++)
             printf("%5d ", a[i][j]);
         printf("\n");
     }
@@ -55,29 +56,31 @@ void xoanNgoaiVao(int a[][100], int n, int m) {
     int left = 0, right = m - 1;
     int num = 1;
 
-    /* Lap den khi cac bien gioi han gap nhau */
+    int i, j;
+
+    /* Lap den khi cac bien gioi han giao nhau */
     while (top <= bottom && left <= right) {
 
-        /* Di tu trai sang phai tren dong top */
-        for (int j = left; j <= right; j++)
+        /* Di ngang tu trai sang phai */
+        for (j = left; j <= right; j++)
             a[top][j] = num++;
         top++;
 
-        /* Di tu tren xuong duoi o cot right */
-        for (int i = top; i <= bottom; i++)
+        /* Di xuong duoi o cot right */
+        for (i = top; i <= bottom; i++)
             a[i][right] = num++;
         right--;
 
-        /* Di tu phai sang trai tren dong bottom */
+        /* Di ngang tu phai sang trai */
         if (top <= bottom) {
-            for (int j = right; j >= left; j--)
+            for (j = right; j >= left; j--)
                 a[bottom][j] = num++;
             bottom--;
         }
 
-        /* Di tu duoi len tren o cot left */
+        /* Di len tren o cot left */
         if (left <= right) {
-            for (int i = bottom; i >= top; i--)
+            for (i = bottom; i >= top; i--)
                 a[i][left] = num++;
             left++;
         }
@@ -90,29 +93,27 @@ void xoanTrongRaNgoai(int a[][100], int n, int m) {
     int left = 0, right = m - 1;
     int num = n * m;
 
+    int i, j;
+
     /* Lap nguoc so, di tu trong ra ngoai */
     while (top <= bottom && left <= right) {
 
-        /* Di tu trai sang phai o dong top */
-        for (int j = left; j <= right; j++)
+        for (j = left; j <= right; j++)
             a[top][j] = num--;
         top++;
 
-        /* Di tu tren xuong duoi o cot right */
-        for (int i = top; i <= bottom; i++)
+        for (i = top; i <= bottom; i++)
             a[i][right] = num--;
         right--;
 
-        /* Di tu phai sang trai o dong bottom */
         if (top <= bottom) {
-            for (int j = right; j >= left; j--)
+            for (j = right; j >= left; j--)
                 a[bottom][j] = num--;
             bottom--;
         }
 
-        /* Di tu duoi len tren o cot left */
         if (left <= right) {
-            for (int i = bottom; i >= top; i--)
+            for (i = bottom; i >= top; i--)
                 a[i][left] = num--;
             left++;
         }
@@ -124,12 +125,11 @@ int main() {
     char buf[100];
     int A[100][100];
 
-    /* Nhap n: dung kieu chuoi, kiem tra hop le */
+    /* Nhap so dong n */
     while (1)
     {
         nhap_chuoi("so dong n", buf);
 
-        /* Kiem tra la so nguyen > 0 */
         if (la_so_nguyen(buf)) {
             n = (int)to_ll(buf);
             if (n > 0 && n <= 100) break;
@@ -138,7 +138,7 @@ int main() {
         printf("n phai la so nguyen duong. Nhap lai.\n");
     }
 
-    /* Nhap m: dung kieu chuoi, kiem tra hop le */
+    /* Nhap so cot m */
     while (1)
     {
         nhap_chuoi("so cot m", buf);
