@@ -18,7 +18,7 @@ int la_so_nguyen(const char *s)
         i = 1;
 
     for (; s[i]; i++)
-        if (!isdigit(s[i]))
+        if (!isdigit(s[i]))   /* ky tu khong phai chu so */
             return 0;
 
     return 1;
@@ -43,8 +43,9 @@ int so_hoan_hao(long long x)
     if (x <= 0) return 0;
 
     long long sum = 0;
+    long long i;
 
-    for (long long i = 1; i * 1LL <= x / 2; i++)
+    for (i = 1; i <= x / 2; i++)
         if (x % i == 0)
             sum += i;
 
@@ -54,12 +55,13 @@ int so_hoan_hao(long long x)
 int main()
 {
     int n = 0;
+    char buf[100];
+    int i;
 
     /* Nhap n, yeu cau n > 0 */
     while (1)
     {
         n = 0;
-        char buf[100];
 
         nhap_chuoi("so luong phan tu n", buf);
 
@@ -74,27 +76,28 @@ int main()
     }
 
     char A[200][100];
+    char ten[50];
 
     printf("\n=== Nhap cac phan tu cua mang A ===\n");
-    for (int i = 0; i < n; i++)
+    for (i = 0; i < n; i++)
     {
-        char ten[50];
         sprintf(ten, "A[%d]", i);
         nhap_chuoi(ten, A[i]);
     }
 
     printf("\n=== Mang A vua nhap ===\n");
-    for (int i = 0; i < n; i++)
+    for (i = 0; i < n; i++)
         printf("%s ", A[i]);
 
     printf("\n\n=== Cac so hoan hao trong mang ===\n");
     int co = 0;
+    long long val;
 
-    for (int i = 0; i < n; i++)
+    for (i = 0; i < n; i++)
     {
-        if (la_so_nguyen(A[i])) 	// chi kiem tra so nguyen
+        if (la_so_nguyen(A[i]))    /* chi kiem tra so nguyen */
         {
-            long long val = to_ll(A[i]);
+            val = to_ll(A[i]);
             if (so_hoan_hao(val))
             {
                 printf("%lld ", val);
