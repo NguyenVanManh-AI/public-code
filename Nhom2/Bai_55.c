@@ -21,7 +21,7 @@ long long nhap_so_nguyen(const char *ten)
         /* Kiem tra tung ky tu */
         for (; s[i] != '\0'; i++)
         {
-            if (!isdigit(s[i]))
+            if (!isdigit(s[i]))   /* ky tu khong phai chu so */
             {
                 hop_le = 0;
                 break;
@@ -48,8 +48,11 @@ long long nhap_so_nguyen(const char *ten)
 /* Ham xoa phan tu tai vi tri k */
 void xoa_vi_tri(long long A[], int *n, int k)
 {
-    for (int i = k; i < *n - 1; i++)
+    int i; /* khai bao bien i o ngoai for */
+
+    for (i = k; i < *n - 1; i++)
         A[i] = A[i + 1];
+
     (*n)--;
 }
 
@@ -63,11 +66,12 @@ int main()
     }
 
     long long A[200];
+    int i;      /* khai bao bien i dung cho vong lap */
+    char ten[50];
 
     printf("\n=== Nhap cac phan tu cua mang A ===\n");
-    for (int i = 0; i < n; i++)
+    for (i = 0; i < n; i++)
     {
-        char ten[50];
         sprintf(ten, "A[%d]", i);
         A[i] = nhap_so_nguyen(ten);
     }
@@ -85,7 +89,7 @@ int main()
 
     /* Xuat ket qua */
     printf("\n=== Mang sau khi xoa A[%d] ===\n", k);
-    for (int i = 0; i < n; i++)
+    for (i = 0; i < n; i++)
         printf("%lld ", A[i]);
 
     printf("\n");
