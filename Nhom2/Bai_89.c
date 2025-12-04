@@ -185,7 +185,7 @@ int main() {
     tachSo(B, bInt, bFrac, &signB);
 
     // ----------------- PHEP CONG -----------------
-    printf("\n--- PHEP CONG ---\n");
+    printf("\n--- PHEP CONG A + B ---\n");
 
     if (signA == signB) {
         // CUNG DAU -> CONG
