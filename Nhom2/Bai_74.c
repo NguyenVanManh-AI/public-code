@@ -3,37 +3,43 @@
 
 #define MAX 50
 
-// --- NHAP MA TRAN ---
+/* --- NHAP MA TRAN --- */
 void nhapMat(double a[][MAX], int m, int n) {
-    for(int i = 0; i < m; i++)
-        for(int j = 0; j < n; j++) {
+    int i, j;
+    for(i = 0; i < m; i++)
+        for(j = 0; j < n; j++) {
             printf("A[%d][%d] = ", i+1, j+1);
             scanf("%lf", &a[i][j]);
         }
 }
 
-// --- XUAT MA TRAN ---
+/* --- XUAT MA TRAN --- */
 void xuatMat(double a[][MAX], int m, int n) {
-    for(int i = 0; i < m; i++) {
-        for(int j = 0; j < n; j++)
-            printf("%20.3Lf      ", a[i][j]);
+    int i, j;
+    for(i = 0; i < m; i++) {
+        for(j = 0; j < n; j++)
+            printf("%20.3lf", a[i][j]);  /* SỬA %Lf → %lf */
         printf("\n");
     }
 }
 
-// --- TIM MAX TREN 1 HANG ---
+/* --- TIM MAX TREN 1 HANG --- */
 double timMaxDong(double a[][MAX], int n, int dong) {
+    int j;
     double max = a[dong][0];
-    for(int j = 1; j < n; j++)
-        if(a[dong][j] > max) max = a[dong][j];
+    for(j = 1; j < n; j++)
+        if(a[dong][j] > max)
+            max = a[dong][j];
     return max;
 }
 
 int main() {
     int m, n;
     double A[MAX][MAX];
+    double sum;
+    int i;
 
-    // --- NHAP m ---
+    /* --- NHAP m --- */
     do {
         printf("Nhap m = ");
         scanf("%d", &m);
@@ -41,7 +47,7 @@ int main() {
             printf("m khong hop le! Nhap lai.\n");
     } while(m <= 0 || m > MAX);
 
-    // --- NHAP n ---
+    /* --- NHAP n --- */
     do {
         printf("Nhap n = ");
         scanf("%d", &n);
@@ -55,17 +61,17 @@ int main() {
     printf("\nMa tran A vua nhap:\n");
     xuatMat(A, m, n);
 
-    // --- KIEM TRA MA TRAN VUONG ---
+    /* --- KIEM TRA MA TRAN VUONG --- */
     if(m != n) {
         printf("\nKhong phai la ma tran vuong, nen khong co duong cheo chinh!\n");
         return 0;
     }
 
-    // --- DUA MAX TUNG HANG LEN DUONG CHEO CHINH ---
-    double sum = 0;
-    for(int i = 0; i < n; i++) {
+    /* --- DUA MAX TUNG HANG LEN DUONG CHEO CHINH --- */
+    sum = 0;
+    for(i = 0; i < n; i++) {
         double maxx = timMaxDong(A, n, i);
-        A[i][i] = maxx; 	// chi GHI DE, khong doi cho
+        A[i][i] = maxx;   /* ghi de, khong doi cho */
         sum += maxx;
     }
 
