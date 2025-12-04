@@ -1,9 +1,46 @@
 #include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+#include <stdlib.h>
 #include <math.h>
 
 #define MAX 50
 
-// *** NHAP MA TRAN ***
+/* Ham kiem tra chuoi co phai so nguyen >= 1 */
+int la_so_nguyen_duong(const char *s) {
+    int i = 0;
+
+    /* Neu co dau '+' thi bo qua */
+    if(s[0] == '+') i = 1;
+
+    /* Khong cho phep dau '-' vi n phai duong */
+    if(s[0] == '-') return 0;
+
+    for(; s[i] != '\0'; i++)
+        if(!isdigit(s[i])) return 0;
+
+    return 1;
+}
+
+/* Ham nhap n theo kieu an toan */
+int nhap_n() {
+    char s[100];
+    int x;
+
+    while(1) {
+        printf("Nhap cap ma tran vuong n : ");
+        scanf("%s", s);
+
+        if(la_so_nguyen_duong(s)) {
+            x = atoi(s);
+            if(x > 0 && x <= MAX) return x;
+        }
+
+        printf("Kich thuoc khong hop le! Hay nhap lai.\n");
+    }
+}
+
+/* --- NHAP MA TRAN --- */
 void nhapMat(double a[][MAX], int n){
     for(int i=0; i<n; i++)
         for(int j=0; j<n; j++){
@@ -12,7 +49,7 @@ void nhapMat(double a[][MAX], int n){
         }
 }
 
-// *** XUAT MA TRAN ***
+/* --- XUAT MA TRAN --- */
 void xuatMat(double a[][MAX], int n){
     for(int i=0; i<n; i++){
         for(int j=0; j<n; j++)
@@ -21,7 +58,7 @@ void xuatMat(double a[][MAX], int n){
     }
 }
 
-// *** TINH DINH THUC BANG GAUSS ***
+/* --- TINH DINH THUC BANG GAUSS --- */
 double detGauss(double A[][MAX], int n){
     double a[MAX][MAX];
     for(int i=0; i<n; i++)
@@ -56,7 +93,7 @@ double detGauss(double A[][MAX], int n){
     return det;
 }
 
-// *** TINH MA TRAN PHU HOP (ADJOINT) ***
+/* --- TINH MA TRAN PHU HOP (ADJOINT) --- */
 void adjoint(double a[][MAX], double adj[][MAX], int n){
     if(n == 1){
         adj[0][0] = 1;
@@ -85,11 +122,11 @@ void adjoint(double a[][MAX], double adj[][MAX], int n){
     }
 }
 
-// *** TINH MA TRAN NGHICH DAO ***
+/* --- TINH MA TRAN NGHICH DAO --- */
 int inverse(double a[][MAX], double inv[][MAX], int n){
     double det = detGauss(a, n);
     printf("Determinant (det) = %f\n", det);
-    if(fabs(det) < 1e-12){ // tang nguong suy bien de thong bao suy bien
+    if(fabs(det) < 1e-12){
         printf("Ma tran suy bien, khong co nghich dao!\n");
         return 0;
     }
@@ -104,17 +141,13 @@ int inverse(double a[][MAX], double inv[][MAX], int n){
     return 1;
 }
 
-// *** MAIN ***
+/* --- MAIN --- */
 int main(){
     int n;
     double A[MAX][MAX], INV[MAX][MAX];
 
-    do{
-        printf("Nhap cap ma tran vuong n : ", MAX);
-        scanf("%d", &n);
-        if(n <= 0 || n > MAX)
-            printf("Kich thuoc khong hop le ! Hay nhap lai.\n");
-    } while(n <= 0 || n > MAX);
+    /* Nhap n theo cach moi */
+    n = nhap_n();
 
     printf("Nhap ma tran A:\n");
     nhapMat(A, n);
