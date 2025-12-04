@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <math.h>
 
-#define EPSILON 1e-12   // chính xác hơn cho double
+#define EPSILON 1e-12   // chinh xac hon cho double
 
 // ham kiem tra gia tri double co hop le cho canh tam giac hay khong
 double nhap_canh(const char *ten)
@@ -42,7 +42,7 @@ void tinh_chieu_cao(double a, double b, double c)
     double S = dien_tich(a, b, c);
     if (S == 0)
     {
-        printf("Tam giac suy bien → khong co chieu cao.\n");
+        printf("Tam giac suy bien -> khong co chieu cao.\n");
         return;
     }
 
@@ -75,7 +75,7 @@ void tinh_ban_kinh(double a, double b, double c)
 
     if (S == 0)
     {
-        printf("Tam giac suy bien → khong ton tai ban kinh noi/ngoai tiep.\n");
+        printf("Tam giac suy bien -> khong ton tai ban kinh noi/ngoai tiep.\n");
         return;
     }
 
@@ -101,7 +101,7 @@ void xu_ly()
         fabs(a + c - b) < EPSILON ||
         fabs(b + c - a) < EPSILON)
     {
-        printf("Day la tam giac SUY BIEN.\n");
+        printf("Day la tam giac suy bien.\n");
         return;
     }
 
@@ -138,3 +138,4 @@ Thuat toan:
 - Ban kinh ngoai tiep R = abc/(4S)
 Tat ca tinh toan dung theo chuan so thuc cua C, dung ham rieng de tach ro bai toan.
 */
+
