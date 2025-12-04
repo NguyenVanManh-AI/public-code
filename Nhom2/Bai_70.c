@@ -4,51 +4,57 @@
 
 /* Ham nhap mang so thuc (double) */
 void nhapMang(double a[], int *n, const char ten) {
+    int i;
     printf("Nhap so phan tu mang %c: ", ten);
-    scanf("%d", n);   // nhap so luong phan tu
+    scanf("%d", n);
 
-    for (int i = 0; i < *n; i++) {
+    for (i = 0; i < *n; i++) {
         printf("%c[%d] = ", ten, i);
-        scanf("%lf", &a[i]);   // nhap gia tri kieu double: am, so thap phan, 1e18
+        scanf("%lf", &a[i]);   /* Cho phep nhap so am, so thap phan, so dang 1e18 */
     }
 }
 
 /* Ham xuat mang so thuc */
 void xuatMang(double a[], int n, const char ten) {
+    int i;
     printf("%c: ", ten);
-    for (int i = 0; i < n; i++)
-        printf("%.6lf ", a[i]);    // in ra 6 chu so thap phan
+    for (i = 0; i < n; i++)
+        printf("%.6lf ", a[i]);   /* In 6 chu so thap phan */
     printf("\n");
 }
 
 /* Ham chen phan tu x vao mang b sao cho mang b tang dan */
 void chenTangDan(double b[], int *nB, double x) {
-    int i = *nB - 1;
+    int i;
+    i = *nB - 1;
 
-    // day cac phan tu lon hon x sang ben phai
+    /* Day cac phan tu lon hon x sang phai */
     while (i >= 0 && b[i] > x) {
         b[i + 1] = b[i];
         i--;
     }
 
-    // chen x vao dung vi tri
+    /* Chen x vao dung vi tri */
     b[i + 1] = x;
-    (*nB)++; // tang so luong phan tu cua B
+    (*nB)++;
 }
 
 /* Ham sap xep chen (insertion sort) tai cho */
 void sapXepChenTaiCho(double b[], int nB) {
-    for (int i = 1; i < nB; i++) {
-        double x = b[i];    // phan tu can chen
-        int j = i - 1;
+    int i, j;
+    double x;
 
-        // day cac phan tu lon hon x sang phai
+    for (i = 1; i < nB; i++) {
+        x = b[i];
+        j = i - 1;
+
+        /* Day cac phan tu lon hon x sang ben phai */
         while (j >= 0 && b[j] > x) {
             b[j + 1] = b[j];
             j--;
         }
 
-        // chen x vao dung vi tri
+        /* Chen x vao dung vi tri */
         b[j + 1] = x;
     }
 }
@@ -56,25 +62,26 @@ void sapXepChenTaiCho(double b[], int nB) {
 int main() {
     double A[MAX], B[MAX];
     int nA, nB;
+    int i;
 
-    // nhap mang A va B
+    /* Nhap mang A va B */
     nhapMang(A, &nA, 'A');
     nhapMang(B, &nB, 'B');
 
-    // in mang ban dau
+    /* Xuat mang ban dau */
     printf("\n--- MANG BAN DAU ---\n");
     xuatMang(A, nA, 'A');
     xuatMang(B, nB, 'B');
 
-    // sap xep B theo thu tu tang dan
+    /* Sap xep mang B tang dan */
     sapXepChenTaiCho(B, nB);
 
-    // noi tung phan tu cua A vao B theo thu tu tang dan
-    for (int i = 0; i < nA; i++) {
+    /* Chen tung phan tu cua A vao B (van giu tang dan) */
+    for (i = 0; i < nA; i++) {
         chenTangDan(B, &nB, A[i]);
     }
 
-    // in ket qua cuoi cung
+    /* Xuat ket qua cuoi cung */
     printf("\n--- MANG B SAU KHI NOI A (TANG DAN) ---\n");
     xuatMang(B, nB, 'B');
 
