@@ -20,7 +20,7 @@ void xoaSo0Cuoi(char *s) {
     }
 }
 
-// Tach so thanh phan nguyen va phan thap phan
+// Tach so
 void tachSo(char *num, char *nguyen, char *thapPhan, int *am) {
     *am = (num[0] == '-');
 
@@ -40,7 +40,7 @@ void tachSo(char *num, char *nguyen, char *thapPhan, int *am) {
     xoaSo0Cuoi(thapPhan);
 }
 
-// So sanh tri tuyet doi 2 so lon
+// So sanh tri tuyet doi
 int soSanhAbs(char *aInt, char *aFrac, char *bInt, char *bFrac) {
     if (strlen(aInt) != strlen(bInt))
         return strlen(aInt) > strlen(bInt) ? 1 : -1;
@@ -59,7 +59,7 @@ int soSanhAbs(char *aInt, char *aFrac, char *bInt, char *bFrac) {
     return 0;
 }
 
-// Cong tri tuyet doi 2 so lon
+// Cong
 void congAbs(char *aInt, char *aFrac, char *bInt, char *bFrac,
              char *resInt, char *resFrac)
 {
@@ -112,7 +112,7 @@ void congAbs(char *aInt, char *aFrac, char *bInt, char *bFrac,
     xoaSo0Dau(resInt);
 }
 
-// Tru tri tuyet doi (so lon tru so be)
+// Tru
 void truAbs(char *aInt, char *aFrac, char *bInt, char *bFrac,
             char *resInt, char *resFrac)
 {
@@ -167,10 +167,12 @@ void truAbs(char *aInt, char *aFrac, char *bInt, char *bFrac,
     xoaSo0Dau(resInt);
 }
 
+// ====================== MAIN ========================
 int main() {
     char A[MAX], B[MAX];
     char aInt[MAX], aFrac[MAX], bInt[MAX], bFrac[MAX];
-    char resInt[MAX], resFrac[MAX];
+    char rAddInt[MAX], rAddFrac[MAX];
+    char rSubInt[MAX], rSubFrac[MAX];
     int signA, signB;
 
     printf("Nhap so thu nhat: ");
@@ -181,31 +183,35 @@ int main() {
     tachSo(A, aInt, aFrac, &signA);
     tachSo(B, bInt, bFrac, &signB);
 
-    int cmp = soSanhAbs(aInt, aFrac, bInt, bFrac);
-    int signKQ = 0;
-
+    // ----------------- PHEP CONG -----------------
+    printf("\n--- PHEP CONG ---\n");
     if (signA == signB) {
-        congAbs(aInt, aFrac, bInt, bFrac, resInt, resFrac);
-        signKQ = signA;
-    } else {
-        if (cmp == 0) {
-            printf("Ket qua: 0\n");
-            return 0;
-        } else if (cmp > 0) {
-            truAbs(aInt, aFrac, bInt, bFrac, resInt, resFrac);
-            signKQ = signA;
-        } else {
-            truAbs(bInt, bFrac, aInt, aFrac, resInt, resFrac);
-            signKQ = signB;
-        }
+        congAbs(aInt, aFrac, bInt, bFrac, rAddInt, rAddFrac);
+        if (signA) printf("-");
+        printf("%s", rAddInt);
+        if (strlen(rAddFrac) > 0) printf(".%s", rAddFrac);
+        printf("\n");
     }
 
-    if (signKQ) printf("-");
+    // ----------------- PHEP TRU -----------------
+    printf("\n--- PHEP TRU A - B ---\n");
+    int cmp = soSanhAbs(aInt, aFrac, bInt, bFrac);
 
-    printf("%s", resInt);
-    if (strlen(resFrac) > 0)
-        printf(".%s", resFrac);
+    if (cmp == 0) {
+        printf("0\n");
+    } else if (cmp > 0) {
+        if (signA) printf("-");
+        truAbs(aInt, aFrac, bInt, bFrac, rSubInt, rSubFrac);
+        printf("%s", rSubInt);
+        if (strlen(rSubFrac) > 0) printf(".%s", rSubFrac);
+        printf("\n");
+    } else {
+        printf("-");
+        truAbs(bInt, bFrac, aInt, aFrac, rSubInt, rSubFrac);
+        printf("%s", rSubInt);
+        if (strlen(rSubFrac) > 0) printf(".%s", rSubFrac);
+        printf("\n");
+    }
 
-    printf("\n");
     return 0;
 }
