@@ -22,12 +22,8 @@ void nhap_chuoi(char *s, int max_len)
             }
         }
 
-        /* Khong duoc bat dau bang '0' neu do dai > 1 */
-        if (hop_le && s[0] == '0' && strlen(s) > 1)
-            hop_le = 0;
-
         if (hop_le)
-            return;
+            return; // chuoi hop le
 
         printf("Chuoi khong hop le. Nhap lai.\n");
     }
@@ -70,7 +66,6 @@ Thuat toan:
 - Nhap chuoi ky tu (de xu ly so rat lon).
 - Kiem tra:
     + Tat ca ky tu phai la '0'..'9'
-    + Khong duoc bat dau bang '0' neu chuoi co do dai > 1
 - Kiem tra doi xung:
     + So sanh ky tu s[l] va s[r] tu 2 dau lien tuc thu hep
 - Neu toan bo giong nhau => doi xung
