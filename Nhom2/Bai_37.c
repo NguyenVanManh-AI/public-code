@@ -62,15 +62,15 @@ int main()
 
     int temp = N;
 
-    /* Luu lai cac so cp */
+    /* Luu lai cac so chinh phuong */
     int cp[100];
     int mu[100];
     int cnt = 0;
 
     while (temp > 0)
     {
-        int sq = so_cp_lon_nhat(temp); // số chính phương lớn nhất
-        int k = (int)sqrt(sq);         // lấy số mũ để in dạng k^2
+        int sq = so_cp_lon_nhat(temp); // so chinh phuong lon nhat
+        int k = (int)sqrt(sq);         // lay so mu de in dang k^2
 
         cp[cnt] = sq;
         mu[cnt] = k;
@@ -96,10 +96,10 @@ int main()
 
 /*
 Thuat toan:
-- N hap N đảm bảo là số tự nhiên và <= 7 triệu.
-- Lặp:
-      lấy số chính phương lớn nhất <= N
-      trừ dần đến khi về 0
-- Lưu lại cả sq = k*k và k để in ra k^2
-- In kết quả theo dạng k1^2 + k2^2 + ...
+- N la so tu nhien va <= 7 trieu.
+- Lap:
+      lay so chinh phuong lon nhat <= N
+      tru dan den khi ve 0
+- Luu lai ca sq = k*k va k de in ra k^2
+- In ket qua theo dang k1^2 + k2^2 + ...
 */
