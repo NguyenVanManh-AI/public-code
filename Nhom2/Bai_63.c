@@ -10,7 +10,7 @@ void nhap_chuoi(const char *ten, char *out)
     scanf("%s", out);
 }
 
-/* Kiem tra chuoi co phai la so nguyen (khong chua dau cham) */
+/* Kiem tra chuoi co phai la so nguyen (khong co dau cham) */
 int la_so_nguyen(const char *s)
 {
     int i = 0;
@@ -18,7 +18,7 @@ int la_so_nguyen(const char *s)
     if (s[0] == '-' && s[1] != '\0')
         i = 1;
 
-    for (; s[i]; i++)
+    for (; s[i] != '\0'; i++)
         if (!isdigit(s[i]))
             return 0;
 
@@ -32,16 +32,17 @@ long long to_ll(const char *s)
     int dau = (s[0] == '-') ? -1 : 1;
     int i = (s[0] == '-') ? 1 : 0;
 
-    for (; s[i]; i++)
+    for (; s[i] != '\0'; i++)
         x = x * 10 + (s[i] - '0');
 
     return dau * x;
 }
 
-/* Kiem tra chinh phuong */
+/* Kiem tra so chinh phuong */
 int la_chinh_phuong(long long x)
 {
-    if (x < 0) return 0;
+    if (x < 0)
+        return 0;
 
     long long t = (long long)(sqrt((long double)x) + 0.5);
 
@@ -51,11 +52,13 @@ int la_chinh_phuong(long long x)
 int main()
 {
     int n = 0;
+    char buf[100];
+    int i;             /* khai bao bien i dung chung cho cac vong lap */
+    char ten[50];      /* su dung lai trong nhap A[i] */
 
-    /* Nhap n, yeu cau n > 0 */
+    /* Nhap n sao cho n > 0 */
     while (1)
     {
-        char buf[100];
         nhap_chuoi("so luong phan tu n", buf);
 
         if (la_so_nguyen(buf))
@@ -71,26 +74,28 @@ int main()
     char A[300][100];
 
     printf("\n=== Nhap cac phan tu cua mang A ===\n");
-    for (int i = 0; i < n; i++)
+
+    for (i = 0; i < n; i++)
     {
-        char ten[50];
         sprintf(ten, "A[%d]", i);
         nhap_chuoi(ten, A[i]);
     }
 
     printf("\n=== Mang A vua nhap ===\n");
-    for (int i = 0; i < n; i++)
+    for (i = 0; i < n; i++)
         printf("%s ", A[i]);
 
     printf("\n\n=== Cac so chinh phuong trong mang ===\n");
+
     int co = 0;
     long long tong = 0;
+    long long val;     /* khai bao ben ngoai for */
 
-    for (int i = 0; i < n; i++)
+    for (i = 0; i < n; i++)
     {
-        if (la_so_nguyen(A[i])) 	// chi nhan so nguyen
+        if (la_so_nguyen(A[i])) /* chi xu ly so nguyen */
         {
-            long long val = to_ll(A[i]);
+            val = to_ll(A[i]);
             if (la_chinh_phuong(val))
             {
                 printf("%lld ", val);
