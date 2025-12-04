@@ -1,129 +1,112 @@
 #include <stdio.h>
-#include <math.h>
+#include <ctype.h>
+#include <string.h>
 
-// ham kiem tra so thuc co phai la so nguyen dung nghia hay khong
-int la_so_nguyen(float x)
+/* Ham doc chuoi (giu nguyen dang nguoi dung nhap) */
+void nhap_chuoi(const char *ten, char *out)
 {
-    if (x == (int)x)
-    {
-        return 1;   // la so nguyen
-    }
-    return 0;       // khong phai so nguyen
+    printf("Nhap %s: ", ten);
+    scanf("%s", out);
 }
 
-// ham nhap so tu nhien voi ten bien (n1, n2, ...)
-int nhap_so_tu_nhien_theo_ten(int index)
+/* Kiem tra chuoi co phai so tu nhien hop le (chi gom chu so 0-9) */
+int la_so_tu_nhien(const char *s)
 {
-    float x;
-    int lan_dau = 1;  // danh dau lan dau tien nhap
+    int i = 0;
+    if (s[0] == '\0') return 0;
 
-    while (1)
-    {
-        if (lan_dau == 1)
-        {
-            printf("n%d: ", index);   // chi in lan dau
-        }
+    for (i = 0; s[i]; i++)
+        if (!isdigit(s[i]))
+            return 0;
 
-        scanf("%f", &x);
-
-        if (la_so_nguyen(x) && (int)x >= 0)
-        {
-            return (int)x;           // tra ve so tu nhien hop le
-        }
-
-        // neu sai, thong bao nhung KHONG in lai "nX:" nua
-        printf("Gia tri khong hop le, nhap lai, n%d: ", index);
-
-        lan_dau = 0; // tu lan sau khong in "nX:" nua
-    }
+    return 1;
 }
 
-// ham tinh uscln 2 so theo thuat toan Euclid
-int uscln_hai_so(int a, int b)
+/* Chuyen chuoi so tu nhien sang long long */
+long long to_ll(const char *s)
 {
-    int temp;
+    long long x = 0;
+    int i;
+    for (i = 0; s[i]; i++)
+        x = x * 10 + (s[i] - '0');
+    return x;
+}
+
+/* USCLN 2 so theo Euclid */
+long long uscln2(long long a, long long b)
+{
+    long long t;
     while (b != 0)
     {
-        temp = a % b;
+        t = a % b;
         a = b;
-        b = temp;
+        b = t;
     }
     return a;
 }
 
-// ham tinh uscln nhieu so
-int uscln_nhieu_so(int arr[], int m)
+/* USCLN nhieu so */
+long long uscln_nhieu(long long arr[], int n)
 {
     int i;
-    int kq = arr[0];
-
-    for (i = 1; i < m; i++)
-    {
-        kq = uscln_hai_so(kq, arr[i]);
-    }
-
-    return kq;
-}
-
-// ham xu ly chinh
-void xu_ly()
-{
-    int m;
-    int i;
-    int arr[1000];
-    int tat_ca_zero = 1; // danh dau truong hop tat ca = 0
-
-    // nhap so m
-    float temp;
-    printf("Nhap so luong m (m >= 2): ");
-    while (1)
-    {
-        scanf("%f", &temp);
-
-        if (la_so_nguyen(temp) && (int)temp >= 2)
-        {
-            m = (int)temp;
-            break;
-        }
-
-        printf("Gia tri khong hop le, nhap lai: ");
-    }
-
-    // nhap n1..nm
-    printf("Nhap %d so tu nhien:\n", m);
-    for (i = 1; i <= m; i++)
-    {
-        arr[i - 1] = nhap_so_tu_nhien_theo_ten(i);
-        if (arr[i - 1] != 0)
-        {
-            tat_ca_zero = 0; // neu co 1 so khac 0 -> khong phai tat ca zero
-        }
-    }
-
-    // kiem tra truong hop tat ca = 0
-    if (tat_ca_zero)
-    {
-        printf("Tat ca so tu nhien = 0, USCLN khong xac dinh\n");
-    }
-    else
-    {
-        printf("USCLN = %d\n", uscln_nhieu_so(arr, m));
-    }
+    long long g = arr[0];
+    for (i = 1; i < n; i++)
+        g = uscln2(g, arr[i]);
+    return g;
 }
 
 int main()
 {
-    xu_ly();
+    char buf[100];
+    int m = 0;
+
+    /* ==== NHAP SO LUONG M ==== */
+    while (1)
+    {
+        nhap_chuoi("so luong phan tu m", buf);
+
+        if (la_so_tu_nhien(buf))
+        {
+            m = (int)to_ll(buf);
+            if (m >= 2) break;
+        }
+
+        printf("m phai la so tu nhien >= 2. Nhap lai.\n");
+    }
+
+    /* ==== NHAP CAC GIA TRI (giữ nguyên chuỗi, không bắt nhập lại) ==== */
+    char A[200][100];
+
+    printf("\n=== Nhap %d gia tri bat ky ===\n", m);
+    for (int i = 0; i < m; i++)
+    {
+        char ten[50];
+        sprintf(ten, "n%d", i + 1);
+        nhap_chuoi(ten, A[i]);
+    }
+
+    /* ==== LOC CAC SO TU NHIEN HOP LE ==== */
+    long long hop_le[200];
+    int dem = 0;
+
+    for (int i = 0; i < m; i++)
+    {
+        if (la_so_tu_nhien(A[i]))
+        {
+            hop_le[dem++] = to_ll(A[i]);
+        }
+    }
+
+    /* ==== XU LY === */
+    if (dem == 0)
+    {
+        printf("\nKhong co so tu nhien hop le nao.\n");
+        return 0;
+    }
+
+    long long ketqua = uscln_nhieu(hop_le, dem);
+
+    printf("\nUSCLN cua cac so tu nhien hop le = %lld\n", ketqua);
+
     return 0;
 }
-
-/*
-Giai thich thuat toan:
-- Kiem tra m phai la so nguyen dung nghia va >= 2
-- Khi nhap tung n1, n2, n3,...:
-    + In ra dung ten "nX:"
-    + Neu sai (vi du 3.4), in: "Gia tri khong hop le, nhap lai, nX:"
-- Neu tat ca so = 0 -> thong bao "USCLN khong xac dinh"
-- Dung thuat toan Euclid de tinh USCLN 2 so
-- Tinh USCLN nhie
-*/
