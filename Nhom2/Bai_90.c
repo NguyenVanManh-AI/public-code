@@ -2,16 +2,17 @@
 #include <string.h>
 
 #define MAX 1000
-#define MAXLEN 100   // độ dài tối đa mỗi chuỗi
+#define MAXLEN 100   // do dai toi da moi chuoi
 
-// Hàm loại bỏ trùng lặp
+// Ham loai bo trung lap
 int loaiBoTrungLap(char a[][MAXLEN], int n) {
     char b[MAX][MAXLEN];
     int m = 0;
+    int i, j, tonTai;
 
-    for (int i = 0; i < n; i++) {
-        int tonTai = 0;
-        for (int j = 0; j < m; j++) {
+    for (i = 0; i < n; i++) {
+        tonTai = 0;
+        for (j = 0; j < m; j++) {
             if (strcmp(a[i], b[j]) == 0) {
                 tonTai = 1;
                 break;
@@ -22,24 +23,25 @@ int loaiBoTrungLap(char a[][MAXLEN], int n) {
         }
     }
 
-    for (int i = 0; i < m; i++)
+    for (i = 0; i < m; i++)
         strcpy(a[i], b[i]);
 
     return m;
 }
 
-// Hợp A ∪ B
+// Hop A ∪ B
 int hop(char a[][MAXLEN], int na, char b[][MAXLEN], int nb, char kq[][MAXLEN]) {
     int m = 0;
+    int i, j, tonTai;
 
-    // Thêm A vào kq
-    for (int i = 0; i < na; i++)
+    // Them A vao kq
+    for (i = 0; i < na; i++)
         strcpy(kq[m++], a[i]);
 
-    // Thêm B nếu chưa có
-    for (int i = 0; i < nb; i++) {
-        int tonTai = 0;
-        for (int j = 0; j < m; j++) {
+    // Them B neu chua co
+    for (i = 0; i < nb; i++) {
+        tonTai = 0;
+        for (j = 0; j < m; j++) {
             if (strcmp(b[i], kq[j]) == 0) {
                 tonTai = 1;
                 break;
@@ -55,9 +57,10 @@ int hop(char a[][MAXLEN], int na, char b[][MAXLEN], int nb, char kq[][MAXLEN]) {
 // Giao A ∩ B
 int giao(char a[][MAXLEN], int na, char b[][MAXLEN], int nb, char kq[][MAXLEN]) {
     int m = 0;
+    int i, j;
 
-    for (int i = 0; i < na; i++) {
-        for (int j = 0; j < nb; j++) {
+    for (i = 0; i < na; i++) {
+        for (j = 0; j < nb; j++) {
             if (strcmp(a[i], b[j]) == 0) {
                 strcpy(kq[m++], a[i]);
                 break;
@@ -68,13 +71,14 @@ int giao(char a[][MAXLEN], int na, char b[][MAXLEN], int nb, char kq[][MAXLEN]) 
     return m;
 }
 
-// Hiệu A – B
+// Hieu A - B
 int hieu(char a[][MAXLEN], int na, char b[][MAXLEN], int nb, char kq[][MAXLEN]) {
     int m = 0;
+    int i, j, tonTai;
 
-    for (int i = 0; i < na; i++) {
-        int tonTai = 0;
-        for (int j = 0; j < nb; j++) {
+    for (i = 0; i < na; i++) {
+        tonTai = 0;
+        for (j = 0; j < nb; j++) {
             if (strcmp(a[i], b[j]) == 0) {
                 tonTai = 1;
                 break;
@@ -87,11 +91,13 @@ int hieu(char a[][MAXLEN], int na, char b[][MAXLEN], int nb, char kq[][MAXLEN]) 
     return m;
 }
 
-// Kiểm tra tập con: A ⊆ B ?
+// Kiem tra tap con: A ⊆ B ?
 int tapCon(char a[][MAXLEN], int na, char b[][MAXLEN], int nb) {
-    for (int i = 0; i < na; i++) {
-        int timThay = 0;
-        for (int j = 0; j < nb; j++) {
+    int i, j, timThay;
+
+    for (i = 0; i < na; i++) {
+        timThay = 0;
+        for (j = 0; j < nb; j++) {
             if (strcmp(a[i], b[j]) == 0) {
                 timThay = 1;
                 break;
@@ -103,10 +109,11 @@ int tapCon(char a[][MAXLEN], int na, char b[][MAXLEN], int nb) {
     return 1;
 }
 
-// In tập hợp
+// In tap hop
 void inTap(char a[][MAXLEN], int n) {
+    int i;
     printf("{ ");
-    for (int i = 0; i < n; i++)
+    for (i = 0; i < n; i++)
         printf("%s ", a[i]);
     printf("}\n");
 }
@@ -115,20 +122,21 @@ void inTap(char a[][MAXLEN], int n) {
 int main() {
     char A[MAX][MAXLEN], B[MAX][MAXLEN], KQ[MAX][MAXLEN];
     int nA, nB, nKQ;
+    int i;
 
     printf("Nhap so phan tu tap A: ");
     scanf("%d", &nA);
     printf("Nhap cac phan tu tap A:\n");
-    for (int i = 0; i < nA; i++)
+    for (i = 0; i < nA; i++)
         scanf("%s", A[i]);
 
     printf("Nhap so phan tu tap B: ");
     scanf("%d", &nB);
     printf("Nhap cac phan tu tap B:\n");
-    for (int i = 0; i < nB; i++)
+    for (i = 0; i < nB; i++)
         scanf("%s", B[i]);
 
-    // Loại trùng lặp
+    // Loai trung lap
     nA = loaiBoTrungLap(A, nA);
     nB = loaiBoTrungLap(B, nB);
 
@@ -138,7 +146,7 @@ int main() {
     printf("Tap B: ");
     inTap(B, nB);
 
-    // Hợp
+    // Hop
     nKQ = hop(A, nA, B, nB, KQ);
     printf("\nHop (A union B): ");
     inTap(KQ, nKQ);
@@ -148,12 +156,12 @@ int main() {
     printf("Giao (A intersect B): ");
     inTap(KQ, nKQ);
 
-    // Hiệu
+    // Hieu
     nKQ = hieu(A, nA, B, nB, KQ);
     printf("Hieu (A - B): ");
     inTap(KQ, nKQ);
 
-    // Tập con
+    // Tap con
     if (tapCon(A, nA, B, nB))
         printf("\nTap A la tap con cua tap B\n");
     else
