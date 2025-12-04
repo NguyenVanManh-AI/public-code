@@ -2,13 +2,14 @@
 #include <string.h>
 #include <ctype.h>
 
+/* Ham nhap chuoi */
 void nhap_chuoi(const char *ten, char *out)
 {
     printf("Nhap %s: ", ten);
     scanf("%s", out);
 }
 
-/* Kiem tra chuoi co phai so am */
+/* Ham kiem tra chuoi co phai la so am */
 int la_so_am(const char *s)
 {
     return (s[0] == '-');
@@ -17,26 +18,33 @@ int la_so_am(const char *s)
 int main()
 {
     int n;
+    char buf[50];
+    int hop_le;
+    int i;
+    int m = 0;
 
-    /* Nhap n > 0 */
+    /* Nhap n sao cho n > 0 */
     while (1)
     {
-        char buf[50];
         printf("Nhap so luong phan tu n: ");
         scanf("%s", buf);
 
-        int hop_le = 1;
-        for (int i = 0; buf[i]; i++)
+        hop_le = 1;
+
+        for (i = 0; buf[i] != '\0'; i++)
+        {
             if (!isdigit(buf[i]))
                 hop_le = 0;
+        }
 
         if (hop_le)
         {
             n = 0;
-            for (int i = 0; buf[i]; i++)
+            for (i = 0; buf[i] != '\0'; i++)
                 n = n * 10 + (buf[i] - '0');
 
-            if (n > 0) break;
+            if (n > 0)
+                break;
         }
 
         printf("n phai la so nguyen duong > 0. Nhap lai.\n");
@@ -44,32 +52,34 @@ int main()
 
     char A[200][100];
     char B[200][100];
-    int m = 0;
+    char ten[20];
 
+    /* Nhap mang A */
     printf("\n=== Nhap cac phan tu cua mang A ===\n");
-    for (int i = 0; i < n; i++)
+    for (i = 0; i < n; i++)
     {
-        char ten[20];
         sprintf(ten, "A[%d]", i);
         nhap_chuoi(ten, A[i]);
     }
 
+    /* Xuat mang A */
     printf("\n=== Mang A vua nhap ===\n");
-    for (int i = 0; i < n; i++)
+    for (i = 0; i < n; i++)
         printf("%s ", A[i]);
 
+    /* Xoa cac so am */
     printf("\n\n=== Mang A sau khi xoa cac so am ===\n");
 
-    for (int i = 0; i < n; i++)
+    for (i = 0; i < n; i++)
     {
-        if (!la_so_am(A[i])) 	// giu so >= 0, ke ca dang 999999999999.123
+        if (!la_so_am(A[i]))   /* Chi giu cac chuoi khong bat dau bang dau tru */
         {
             strcpy(B[m], A[i]);
             m++;
         }
     }
 
-    for (int i = 0; i < m; i++)
+    for (i = 0; i < m; i++)
         printf("%s ", B[i]);
 
     printf("\n");
