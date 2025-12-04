@@ -22,10 +22,11 @@ void xoaSo0Cuoi(char *s) {
 
 // Tach so thanh: nguyen, thap phan, dau
 void tachSo(char *num, char *nguyen, char *thapPhan, int *am) {
+    char *p, *dot;
     *am = (num[0] == '-');
 
-    char *p = num + (*am ? 1 : 0);
-    char *dot = strchr(p, '.');
+    p = num + (*am ? 1 : 0);
+    dot = strchr(p, '.');
 
     if (dot) {
         strncpy(nguyen, p, dot - p);
@@ -42,6 +43,9 @@ void tachSo(char *num, char *nguyen, char *thapPhan, int *am) {
 
 // So sanh tri tuyet doi
 int soSanhAbs(char *aInt, char *aFrac, char *bInt, char *bFrac) {
+    int i, la, lb, L;
+    char ca, cb;
+
     if (strlen(aInt) != strlen(bInt))
         return strlen(aInt) > strlen(bInt) ? 1 : -1;
 
@@ -49,53 +53,57 @@ int soSanhAbs(char *aInt, char *aFrac, char *bInt, char *bFrac) {
     if (cmp != 0)
         return cmp > 0 ? 1 : -1;
 
-    int la = strlen(aFrac), lb = strlen(bFrac);
-    int L = (la > lb ? la : lb);
+    la = strlen(aFrac);
+    lb = strlen(bFrac);
+    L = (la > lb ? la : lb);
 
-    for (int i = 0; i < L; i++) {
-        char ca = (i < la ? aFrac[i] : '0');
-        char cb = (i < lb ? bFrac[i] : '0');
+    for (i = 0; i < L; i++) {
+        ca = (i < la ? aFrac[i] : '0');
+        cb = (i < lb ? bFrac[i] : '0');
         if (ca != cb) return (ca > cb) ? 1 : -1;
     }
     return 0;
 }
 
-// cong tri tuyet doi
+// Cong tri tuyet doi
 void congAbs(char *aInt, char *aFrac, char *bInt, char *bFrac,
              char *resInt, char *resFrac)
 {
-    int la = strlen(aFrac);
-    int lb = strlen(bFrac);
-    int L = (la > lb ? la : lb);
-
+    int la, lb, L, i, ia, ib, imax, k, sum, carry;
     char A[MAX], B[MAX];
+
+    la = strlen(aFrac);
+    lb = strlen(bFrac);
+    L = (la > lb ? la : lb);
+
     strcpy(A, aFrac);
     strcpy(B, bFrac);
 
     while (strlen(A) < L) strcat(A, "0");
     while (strlen(B) < L) strcat(B, "0");
 
-    int carry = 0;
+    carry = 0;
     resFrac[L] = '\0';
 
-    for (int i = L-1; i >= 0; i--) {
-        int sum = (A[i] - '0') + (B[i] - '0') + carry;
+    for (i = L-1; i >= 0; i--) {
+        sum = (A[i] - '0') + (B[i] - '0') + carry;
         resFrac[i] = (sum % 10) + '0';
         carry = sum / 10;
     }
 
-    // cong phan nguyen
-    int ia = strlen(aInt), ib = strlen(bInt);
-    int imax = (ia > ib ? ia : ib);
+    // Cong phan nguyen
+    ia = strlen(aInt);
+    ib = strlen(bInt);
+    imax = (ia > ib ? ia : ib);
 
     resInt[imax] = '\0';
-    int k = imax - 1;
+    k = imax - 1;
     ia--; ib--;
 
     while (imax--) {
         int da = (ia >= 0 ? aInt[ia--] - '0' : 0);
         int db = (ib >= 0 ? bInt[ib--] - '0' : 0);
-        int sum = da + db + carry;
+        sum = da + db + carry;
 
         resInt[k--] = (sum % 10) + '0';
         carry = sum / 10;
@@ -110,26 +118,29 @@ void congAbs(char *aInt, char *aFrac, char *bInt, char *bFrac,
     xoaSo0Dau(resInt);
 }
 
-// tru tri tuyet doi (a ≥ b)
+// Tru tri tuyet doi (a >= b)
 void truAbs(char *aInt, char *aFrac, char *bInt, char *bFrac,
             char *resInt, char *resFrac)
 {
-    int la = strlen(aFrac), lb = strlen(bFrac);
-    int L = (la > lb ? la : lb);
-
+    int la, lb, L, i, ia, ib, k, da, db, borrow;
     char A[MAX], B[MAX];
+
+    la = strlen(aFrac);
+    lb = strlen(bFrac);
+    L = (la > lb ? la : lb);
+
     strcpy(A, aFrac);
     strcpy(B, bFrac);
 
     while (strlen(A) < L) strcat(A, "0");
     while (strlen(B) < L) strcat(B, "0");
 
-    int borrow = 0;
+    borrow = 0;
     resFrac[L] = '\0';
 
-    for (int i = L-1; i >= 0; i--) {
-        int da = (A[i] - '0') - borrow;
-        int db = (B[i] - '0');
+    for (i = L-1; i >= 0; i--) {
+        da = (A[i] - '0') - borrow;
+        db = (B[i] - '0');
 
         if (da < db) {
             da += 10;
@@ -139,17 +150,17 @@ void truAbs(char *aInt, char *aFrac, char *bInt, char *bFrac,
         resFrac[i] = (da - db) + '0';
     }
 
-    // tru phan nguyen
-    int ia = strlen(aInt);
-    int ib = strlen(bInt);
+    // Tru phan nguyen
+    ia = strlen(aInt);
+    ib = strlen(bInt);
 
     resInt[ia] = '\0';
-    int k = ia - 1;
+    k = ia - 1;
     ia--; ib--;
 
     while (k >= 0) {
-        int da = aInt[ia] - '0';
-        int db = (ib >= 0 ? bInt[ib] - '0' : 0);
+        da = aInt[ia] - '0';
+        db = (ib >= 0 ? bInt[ib] - '0' : 0);
         da -= borrow;
 
         if (da < db) {
@@ -167,7 +178,6 @@ void truAbs(char *aInt, char *aFrac, char *bInt, char *bFrac,
     xoaSo0Dau(resInt);
 }
 
-
 // ====================== MAIN ========================
 int main() {
     char A[MAX], B[MAX];
@@ -175,6 +185,7 @@ int main() {
     char rAddInt[MAX], rAddFrac[MAX];
     char rSubInt[MAX], rSubFrac[MAX];
     int signA, signB;
+    int cmp, newSignB;
 
     printf("Nhap so thu nhat: ");
     scanf("%s", A);
@@ -200,19 +211,19 @@ int main() {
         }
     } else {
         // KHAC DAU -> TRU
-        int cmp = soSanhAbs(aInt, aFrac, bInt, bFrac);
+        cmp = soSanhAbs(aInt, aFrac, bInt, bFrac);
 
         if (cmp == 0) {
             printf("0\n");
         } else if (cmp > 0) {
-            // |A| > |B| ⇒ KET QUA CUNG VOI A
+            // |A| > |B| -> KET QUA CUNG VOI A
             if (signA) printf("-");
             truAbs(aInt, aFrac, bInt, bFrac, rAddInt, rAddFrac);
             printf("%s", rAddInt);
             if (strlen(rAddFrac) > 0) printf(".%s", rAddFrac);
             printf("\n");
         } else {
-            // |B| > |A| ⇒ KET QUA CUNG VOI B
+            // |B| > |A| -> KET QUA CUNG VOI B
             if (signB) printf("-");
             truAbs(bInt, bFrac, aInt, aFrac, rAddInt, rAddFrac);
             printf("%s", rAddInt);
@@ -225,7 +236,7 @@ int main() {
     printf("\n--- PHEP TRU A - B ---\n");
 
     // A - B = A + (-B)
-    int newSignB = !signB;  // dao dau B
+    newSignB = !signB;  // dao dau B
 
     if (signA == newSignB) {
         congAbs(aInt, aFrac, bInt, bFrac, rSubInt, rSubFrac);
@@ -239,7 +250,7 @@ int main() {
             printf("\n");
         }
     } else {
-        int cmp = soSanhAbs(aInt, aFrac, bInt, bFrac);
+        cmp = soSanhAbs(aInt, aFrac, bInt, bFrac);
 
         if (cmp == 0) {
             printf("0\n");
