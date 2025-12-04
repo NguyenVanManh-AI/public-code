@@ -74,11 +74,14 @@ int main()
         printf("m phai la so tu nhien >= 2. Nhap lai.\n");
     }
 
-    /* ==== NHAP CAC GIA TRI (giữ nguyên chuỗi, không bắt nhập lại) ==== */
+    /* ==== NHAP CAC GIA TRI ==== */
     char A[200][100];
 
     printf("\n=== Nhap %d gia tri bat ky ===\n", m);
-    for (int i = 0; i < m; i++)
+
+    /* Dua khai bao bien i ra ngoai de dung chuan C89 */
+    int i;
+    for (i = 0; i < m; i++)
     {
         char ten[50];
         sprintf(ten, "n%d", i + 1);
@@ -89,7 +92,7 @@ int main()
     long long hop_le[200];
     int dem = 0;
 
-    for (int i = 0; i < m; i++)
+    for (i = 0; i < m; i++)
     {
         if (la_so_tu_nhien(A[i]))
         {
@@ -97,10 +100,26 @@ int main()
         }
     }
 
-    /* ==== XU LY === */
+    /* ==== XU LY ==== */
     if (dem == 0)
     {
         printf("\nKhong co so tu nhien hop le nao.\n");
+        return 0;
+    }
+
+    int tat_ca_bang_0 = 1;
+    for (i = 0; i < dem; i++)
+    {
+        if (hop_le[i] != 0)
+        {
+            tat_ca_bang_0 = 0;
+            break;
+        }
+    }
+
+    if (tat_ca_bang_0)
+    {
+        printf("\nTat ca so tu nhien = 0, USCLN khong xac dinh\n");
         return 0;
     }
 
