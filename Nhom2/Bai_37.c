@@ -34,7 +34,7 @@ int nhap_n()
                 n = n * 10 + (s[i] - '0');
 
             /* Kiem tra pham vi */
-            if (n > 0 && n <= 7000000)
+            if (n >= 0 && n <= 7000000)
                 return (int)n;
         }
 
@@ -52,6 +52,14 @@ int so_cp_lon_nhat(int x)
 int main()
 {
     int N = nhap_n();
+
+    /* Xu ly rieng cho truong hop N = 0 */
+    if (N == 0)
+    {
+        printf("0 = 0^2\n");
+        return 0;
+    }
+
     int temp = N;
 
     /* Luu lai cac so cp */
