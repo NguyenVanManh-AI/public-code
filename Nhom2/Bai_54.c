@@ -1,169 +1,111 @@
 #include <stdio.h>
-#include <string.h>
-#include <ctype.h>
 #include <stdlib.h>
+#include <string.h>
 #include <math.h>
 
-#define MAX 500
+#define DAI_TOI_DA 256
 
-/* ------------------ KIEM TRA CHUOI LA SO THUC ------------------ */
-/* Cho phep so am, so lon, co phan thap phan */
-int la_so_thuc(const char *s)
-{
-    int i = 0, da_co_dau_cham = 0;
+// Ham doi phan nguyen sang co so moi
+void doi_phan_nguyen(long long so, int coso, char *ketqua) {
+    char ky_tu[] = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    char tam[DAI_TOI_DA];
+    int i;
+    int am;
+    int dai;
+    int j;
 
-    if (s[0] == '-') i = 1;
+    i = 0;
+    am = 0;
 
-    for (; s[i] != '\0'; i++)
-    {
-        if (s[i] == '.')
-        {
-            if (da_co_dau_cham) return 0;
-            da_co_dau_cham = 1;
-        }
-        else if (!isdigit(s[i]))
-            return 0;
-    }
-
-    return 1;
-}
-
-/* ------------------ NHAP SO THUC N ------------------ */
-double nhap_so_thuc()
-{
-    char s[MAX];
-    double x;
-    int hop_le;
-
-    while (1)
-    {
-        printf("Nhap so thuc n (he thap phan): ");
-        scanf("%s", s);
-
-        hop_le = la_so_thuc(s);
-        if (hop_le)
-        {
-            x = atof(s);
-            return x;
-        }
-
-        printf("Gia tri khong hop le. Nhap lai.\n");
-    }
-}
-
-/* ------------------ NHAP CO SO C (2..36) ------------------ */
-int nhap_coso()
-{
-    char s[100];
-    int i, hop_le;
-    long long c;
-
-    while (1)
-    {
-        hop_le = 1;
-        printf("Nhap co so c (2 -> 36): ");
-        scanf("%s", s);
-
-        for (i = 0; s[i] != '\0'; i++)
-        {
-            if (!isdigit(s[i]))
-            {
-                hop_le = 0;
-                break;
-            }
-        }
-
-        if (hop_le)
-        {
-            c = 0;
-            for (i = 0; s[i] != '\0'; i++)
-                c = c * 10 + (s[i] - '0');
-
-            if (c >= 2 && c <= 36)
-                return (int)c;
-        }
-
-        printf("Co so phai trong khoang 2..36. Nhap lai.\n");
-    }
-}
-
-/* ------------------ DOI PHAN NGUYEN ------------------ */
-void doi_phan_nguyen(long long nguyen, int coso, char *kq)
-{
-    char buf[300];
-    int idx = 0, i;
-
-    if (nguyen == 0)
-    {
-        kq[0] = '0';
-        kq[1] = '\0';
+    // Neu so = 0 thi ket qua la "0"
+    if (so == 0) {
+        strcpy(ketqua, "0");
         return;
     }
 
-    while (nguyen > 0)
-    {
-        int r = nguyen % coso;
-        if (r < 10) buf[idx++] = '0' + r;
-        else        buf[idx++] = 'A' + (r - 10);
-        nguyen /= coso;
+    // Kiem tra so am
+    if (so < 0) {
+        am = 1;
+        so = -so;
     }
 
-    for (i = 0; i < idx; i++)
-        kq[i] = buf[idx - 1 - i];
-    kq[idx] = '\0';
-}
-
-/* ------------------ DOI PHAN THAP PHAN ------------------ */
-void doi_phan_thap_phan(double thap_phan, int coso, char *kq)
-{
-    int i, digit;
-    char buf[300];
-    int idx = 0;
-
-    for (i = 0; i < 40; i++)
-    {
-        thap_phan *= coso;
-        digit = (int)thap_phan;
-
-        if (digit < 10) buf[idx++] = '0' + digit;
-        else             buf[idx++] = 'A' + (digit - 10);
-
-        thap_phan -= digit;
-        if (thap_phan == 0) break;
+    // Chia lien tuc de lay tung chu so
+    while (so > 0) {
+        tam[i++] = ky_tu[so % coso];
+        so /= coso;
     }
 
-    buf[idx] = '\0';
-    strcpy(kq, buf);
+    // Neu la so am thi them dau '-'
+    if (am)
+        tam[i++] = '-';
+
+    tam[i] = '\0';
+
+    // Dao nguoc chuoi tam
+    dai = strlen(tam);
+    for (j = 0; j < dai; j++) {
+        ketqua[j] = tam[dai - j - 1];
+    }
+    ketqua[dai] = '\0';
 }
 
-/* ------------------ MAIN ------------------ */
-int main()
-{
-    double n, thap_phan, n_abs;
-    long long nguyen;
-    int c;
-    char kq_nguyen[300], kq_thap_phan[300];
-    int am;
+// Ham doi phan thap phan
+void doi_phan_thap_phan(double phanle, int coso, char *ketqua) {
+    char ky_tu[] = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    int gioihan;
+    int i;
+    int so;
 
-    n = nhap_so_thuc();
-    c = nhap_coso();
+    gioihan = 20;
+    i = 0;
 
-    am = (n < 0);
-    n_abs = fabs(n);
+    while (phanle > 1e-15 && i < gioihan) {
+        phanle *= coso;
+        so = (int)phanle;
+        ketqua[i++] = ky_tu[so];
+        phanle -= so;
+    }
 
-    nguyen = (long long)n_abs;
-    thap_phan = n_abs - nguyen;
+    ketqua[i] = '\0';
+}
 
-    doi_phan_nguyen(nguyen, c, kq_nguyen);
-    doi_phan_thap_phan(thap_phan, c, kq_thap_phan);
+int main() {
+    char chuoi_nhap[DAI_TOI_DA];
+    double so_nhap;
+    int coso;
+    long long phan_nguyen;
+    double phan_thap_phan;
+    char kq_nguyen[DAI_TOI_DA];
+    char kq_thap_phan[DAI_TOI_DA];
 
-    printf("\n=== Ket qua doi co so ===\n");
-    if (am) printf("-");
-    printf("%s", kq_nguyen);
+    // Nhap so he 10
+    printf("Nhap so he thap phan: ");
+    scanf("%s", chuoi_nhap);
 
-    if (thap_phan > 0)
-        printf(".%s", kq_thap_phan);
+    // Vong lap bat buoc nhap lai co so neu sai
+    do {
+        printf("Nhap co so can doi (2 - 36): ");
+        scanf("%d", &coso);
 
-    printf("\n");
+        if (coso < 2 || coso > 36)
+            printf("Co so khong hop le! Vui long nhap lai.\n");
+
+    } while (coso < 2 || coso > 36);
+
+    so_nhap = atof(chuoi_nhap);
+
+    phan_nguyen = (long long)so_nhap;
+    phan_thap_phan = fabs(so_nhap - phan_nguyen);
+
+    doi_phan_nguyen(phan_nguyen, coso, kq_nguyen);
+    doi_phan_thap_phan(phan_thap_phan, coso, kq_thap_phan);
+
+    printf("Ket qua: %s", kq_nguyen);
+
+    if (phan_thap_phan > 0)
+        printf(".%s\n", kq_thap_phan);
+    else
+        printf("\n");
+
     return 0;
 }
