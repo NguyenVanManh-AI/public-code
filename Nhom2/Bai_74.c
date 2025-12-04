@@ -1,7 +1,40 @@
 #include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+#include <stdlib.h>
 #include <math.h>
 
 #define MAX 50
+
+/* Ham kiem tra chuoi co phai so nguyen du duong khong */
+int la_so_nguyen(const char *s) {
+    int i = 0;
+
+    if(s[0] == '+' || s[0] == '-') i = 1; /* bo qua dau */
+
+    for(; s[i] != '\0'; i++)
+        if(!isdigit(s[i])) return 0; /* phat hien ky tu khong phai so -> sai */
+
+    return 1;
+}
+
+/* Ham nhap so nguyen >= 1 va <= MAX */
+int nhap_so_nguyen(const char *nhac) {
+    char s[100];
+    int x;
+
+    while(1) {
+        printf("%s", nhac);
+        scanf("%s", s);
+
+        if(la_so_nguyen(s)) {
+            x = atoi(s);
+            if(x > 0 && x <= MAX) return x;
+        }
+
+        printf("Gia tri khong hop le! Nhap lai.\n");
+    }
+}
 
 /* --- NHAP MA TRAN --- */
 void nhapMat(double a[][MAX], int m, int n) {
@@ -18,7 +51,7 @@ void xuatMat(double a[][MAX], int m, int n) {
     int i, j;
     for(i = 0; i < m; i++) {
         for(j = 0; j < n; j++)
-            printf("%20.3lf", a[i][j]);  /* SỬA %Lf → %lf */
+            printf("%20.3lf", a[i][j]);
         printf("\n");
     }
 }
@@ -39,21 +72,11 @@ int main() {
     double sum;
     int i;
 
-    /* --- NHAP m --- */
-    do {
-        printf("Nhap m = ");
-        scanf("%d", &m);
-        if(m <= 0 || m > MAX)
-            printf("m khong hop le! Nhap lai.\n");
-    } while(m <= 0 || m > MAX);
+    /* --- NHAP m dung cach moi --- */
+    m = nhap_so_nguyen("Nhap m = ");
 
-    /* --- NHAP n --- */
-    do {
-        printf("Nhap n = ");
-        scanf("%d", &n);
-        if(n <= 0 || n > MAX)
-            printf("n khong hop le! Nhap lai.\n");
-    } while(n <= 0 || n > MAX);
+    /* --- NHAP n dung cach moi --- */
+    n = nhap_so_nguyen("Nhap n = ");
 
     printf("Nhap ma tran A:\n");
     nhapMat(A, m, n);
