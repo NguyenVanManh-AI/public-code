@@ -19,18 +19,18 @@ void xuatMang(int a[], int n, const char ten) {
     printf("\n");
 }
 
-/* Chèn x vào b sao cho b tăng dần (KHÔNG dùng mảng phụ) */
+/* Chen x vao b sao cho b tang dan (KHONG dung mang phu) */
 void chenTangDan(int b[], int *nB, int x) {
     int i = *nB - 1;
     while (i >= 0 && b[i] > x) {
-        b[i + 1] = b[i];  // dời sang phải
+        b[i + 1] = b[i]; 	// doi sang phai
         i--;
     }
     b[i + 1] = x;
     (*nB)++;
 }
 
-/* Sắp xếp lại B theo kiểu chèn dần (KHÔNG dùng mảng phụ) */
+/* Sap xep lai B theo kieu chen dan (KHONG dung mang phu) */
 void sapXepChenTaiCho(int b[], int nB) {
     for (int i = 1; i < nB; i++) {
         int x = b[i];
@@ -55,10 +55,10 @@ int main() {
     xuatMang(A, nA, 'A');
     xuatMang(B, nB, 'B');
 
-    /* Sắp xếp B theo thứ tự tăng dần, nhưng dùng đúng insertion sort tại chỗ */
+    /* Sap xep B theo thu tu tang dan, nhung dung dung insertion sort tai cho */
     sapXepChenTaiCho(B, nB);
 
-    /* Nối A vào B */
+    /* Noi A vao B */
     for (int i = 0; i < nA; i++) {
         chenTangDan(B, &nB, A[i]);
     }
