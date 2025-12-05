@@ -11,7 +11,8 @@ double nhap_canh(const char *ten)
     {
         printf("Nhap canh %s: ", ten);
 
-        if (scanf("%lf", &x) == 1 && x > 0)
+        // so thuc, nguyen -> return 1 , cac truong hop khac (abc, empty,... ) return 0 
+        if (scanf("%lf", &x) == 1 && x > 0) // doc mot gia tri hop le tu ban phim
             return x;
 
         printf("Gia tri khong hop le, phai > 0. Nhap lai.\n");
