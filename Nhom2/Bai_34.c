@@ -10,11 +10,12 @@ void nhap_chuoi(char *s, int max_len)
         scanf("%s", s); // nhap chuoi, khong dung space
 
         int i;
-        int hop_le = 1;
+        int hop_le = 1; // gia su chuoi hop le
 
-        /* Kiem tra toan ky tu la so */
+        /* Kiem tra tung ky tu trong chuoi */
         for (i = 0; s[i] != '\0'; i++)
         {
+            // neu ky tu nay khong phai '0'..'9' thi khong hop le
             if (s[i] < '0' || s[i] > '9')
             {
                 hop_le = 0;
@@ -23,36 +24,38 @@ void nhap_chuoi(char *s, int max_len)
         }
 
         if (hop_le)
-            return; // chuoi hop le
+            return; // chuoi chi toan ky tu so => hop le
 
         printf("Chuoi khong hop le. Nhap lai.\n");
     }
 }
 
-/* Ham kiem tra chuoi co doi xung khong */
+/* Ham kiem tra chuoi co doi xung hay khong */
 int la_doi_xung(const char *s)
 {
-    int l = 0;
-    int r = strlen(s) - 1;
+    int l = 0;                // con tro trai bat dau tu dau chuoi
+    int r = strlen(s) - 1;    // con tro phai bat dau tu cuoi chuoi
 
     while (l < r)
     {
+        // neu 2 ky tu doi xung khong bang nhau thi khong doi xung
         if (s[l] != s[r])
-            return 0; // khong doi xung
+            return 0;
 
-        l++;
-        r--;
+        l++;   // tien con tro trai sang phai
+        r--;   // lui con tro phai sang trai
     }
 
-    return 1; // doi xung
+    return 1; // neu thoat vong lap ma khong sai => doi xung
 }
 
 int main(void)
 {
-    char a[105]; // du cho chuoi lon
+    char a[105]; // mang chua chuoi, du lon de luu so co nhieu chu so
 
-    nhap_chuoi(a, 105); // nhap chuoi so hop le
+    nhap_chuoi(a, 105); // goi ham nhap chuoi so hop le
 
+    // kiem tra va in ket qua
     if (la_doi_xung(a))
         printf("Chuoi tu doi xung\n");
     else
@@ -62,11 +65,15 @@ int main(void)
 }
 
 /*
-Thuat toan:
-- Nhap chuoi ky tu (de xu ly so rat lon).
-- Kiem tra:
-    + Tat ca ky tu phai la '0'..'9'
+Giai thich thuat toan:
+
+- Su dung chuoi de xu ly so rat lon, tranh tran so.
+- Khi nhap chuoi:
+    + Kiem tra tung ky tu co phai la so tu '0'..'9'
+    + Neu co ky tu khac => bat nhap lai
 - Kiem tra doi xung:
-    + So sanh ky tu s[l] va s[r] tu 2 dau lien tuc thu hep
-- Neu toan bo giong nhau => doi xung
+    + Dung 2 con tro: trai (l) va phai (r)
+    + So sanh tung cap ky tu s[l] va s[r]
+    + Neu khac nhau => khong doi xung
+    + Neu tat ca giong nhau => chuoi doi xung
 */
