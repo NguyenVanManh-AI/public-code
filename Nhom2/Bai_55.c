@@ -98,6 +98,7 @@ int main()
 
 /* 
 thuat toan tong quat:
+input: 99999 (khong cho 1e9)
 1. nhap so n va dam bao n > 0
 2. nhap n phan tu mang voi kiem tra chuoi nghiem ngat
 3. nhap chi so k va dam bao k nam trong pham vi hop le
