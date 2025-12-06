@@ -116,6 +116,7 @@ int main()
 /*
 THUAT TOAN + CAC BUOC XU LY:
 
+input: 1e9
 1. Nhap chuoi n, kiem tra neu n la so nguyen duong thi chap nhan.
 2. Nhap n phan tu A[i] duoi dang chuoi (vi co the nhap dau, chu sai...).
 3. In lai mang da nhap.
