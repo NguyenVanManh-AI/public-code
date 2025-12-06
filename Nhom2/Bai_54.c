@@ -134,6 +134,8 @@ Ex : 12.375 -> co so 2 (12.375₁₀ = 1100.011₂)
 | 0.75 × 2  | 1.5     | 1           |
 | 0.5 × 2   | 1.0     | 1           |
 
+Chi tham khao, code hien tai khong su dung bu 2 (dao bit) (vi chi can may tinh moi can dung)
+Trong code hien tai su dung dau "-" de bieu dien so am
 Ex : -12.375 -> co so 2 (12.375₁₀ = 1111 0011 1010₂)
 B1 : 12.375₁₀ = 1100.011₂
 B2 : 1100.011 = 0000 1100 0110 (8 bit nguyen + 4 bit phay => them 0 o cuoi)
