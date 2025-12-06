@@ -37,7 +37,6 @@ void gopMang(double a[], int nA, double b[], int *nB) {
     for (i_a = 0; i_a < nA; i_a++) { // duyet tung phan tu cua A
         b[*nB] = a[i_a]; // them phan tu A vao cuoi mang B
         (*nB)++; // tang so phan tu B
-
         for (i_b = 1; i_b < *nB; i_b++) { // insertion sort
             x = b[i_b]; // lay gia tri tai vi tri can chen
             j_b = i_b - 1; // vi tri ke truoc
@@ -82,5 +81,10 @@ THUAT TOAN CHUONG TRINH
 LUU Y
    - Co the toi da 100 phan tu cho moi mang
    - Mang B duoc sap xep lai moi khi them mot phan tu moi
-   - Su dung insertion sort (phu hop khi so luong phan tu tang dan tung buoc)
- */
+Insertion Sort (Sap xep chen) la thuat toan sap xep tang dan (hoac giam dan) cho mang.
+    1. Xet lan luot tung phan tu tu vi tri 1 den cuoi mang.
+    2. Luu gia tri phan tu hien tai vao bien tam x.
+    3. So sanh voi cac phan tu ben trai cua no (da duoc sap xep) va chuyen cac phan tu lon hon sang phai.
+    4. Chen x vao vi tri dung sao cho cac phan tu ben trai nho hon (hoac lon hon neu sap xep giam) va cac phan tu ben phai lon hon (hoac nho hon).
+    5. Lap lai cho den khi tat ca cac phan tu da duoc sap xep.
+*/
